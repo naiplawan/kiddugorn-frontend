@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Plus, User, Settings, CreditCard, LogOut, Crown } from 'lucide-react'
-import { ProBadge } from '@/components/subscription/pro-badge'
+import { ProBadge } from '@/components/ui/pro-badge'
 
 export function Navbar() {
   const { user, subscription, isAuthenticated, isLoading, logout } = useAuth()

@@ -241,7 +241,7 @@ export interface CastVoteInput {
 }
 
 export interface FixDateInput {
-  eventDateId: string
+  fixedDateIds: string[]
 }
 
 // ==================== Form Types ====================

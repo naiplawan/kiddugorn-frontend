@@ -29,7 +29,7 @@ interface EventData {
   fixedDateIds: string[]
   dateOptions: DateOption[]
   createdAt: string
-  expiresAt: string
+  expiresAt?: string
   _count?: {
     votes: number
   }

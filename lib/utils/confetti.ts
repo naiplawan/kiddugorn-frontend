@@ -106,11 +106,11 @@ export function fireConfetti(options: ConfettiOptions = {}) {
 
   function animate() {
     if (frame >= ticks) {
-      canvas.remove()
+      canvas!.remove()
       return
     }
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
 
     particles.forEach((particle) => {
       // Update position
@@ -121,21 +121,21 @@ export function fireConfetti(options: ConfettiOptions = {}) {
       particle.opacity = Math.max(0, 1 - frame / ticks)
 
       // Draw particle
-      ctx.save()
-      ctx.translate(particle.x, particle.y)
-      ctx.rotate((particle.rotation * Math.PI) / 180)
-      ctx.globalAlpha = particle.opacity
-      ctx.fillStyle = particle.color
+      ctx!.save()
+      ctx!.translate(particle.x, particle.y)
+      ctx!.rotate((particle.rotation * Math.PI) / 180)
+      ctx!.globalAlpha = particle.opacity
+      ctx!.fillStyle = particle.color
 
       if (particle.shape === 'square') {
-        ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size)
+        ctx!.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size)
       } else {
-        ctx.beginPath()
-        ctx.arc(0, 0, particle.size / 2, 0, Math.PI * 2)
-        ctx.fill()
+        ctx!.beginPath()
+        ctx!.arc(0, 0, particle.size / 2, 0, Math.PI * 2)
+        ctx!.fill()
       }
 
-      ctx.restore()
+      ctx!.restore()
     })
 
     frame++
