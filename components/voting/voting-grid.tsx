@@ -1,6 +1,7 @@
 'use client'
 
-import { memo, useCallback, useMemo } from 'react'
+import { memo, useCallback, useMemo, useState, useRef, useEffect } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { VoteCell } from './vote-cell'
 import { VisualSummary } from './visual-summary'
@@ -59,26 +60,31 @@ const GridHeader = memo(function GridHeader({
         <th
           className={cn(
             'sticky left-0 z-20 bg-white',
-            'min-w-[100px] h-12 px-3',
+            'min-w-[100px] h-14 px-3',
             'text-left font-semibold text-gray-700',
-            'border-b border-gray-200'
+            'border-b border-gray-200',
+            // Shadow for sticky column effect
+            'shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]'
           )}
         >
           ชื่อ
         </th>
 
         {/* Date option headers - sticky top */}
-        {dateOptions.map((option) => {
+        {dateOptions.map((option, index) => {
           const isFixed = fixedDateIds.includes(option.id)
+          const isLast = index === dateOptions.length - 1
           return (
             <th
               key={option.id}
               className={cn(
                 'sticky top-0 z-10 bg-white',
-                'min-w-[80px] h-12 px-2',
+                'min-w-[90px] h-14 px-2',
                 'text-center font-semibold text-gray-700',
                 'border-b border-gray-200',
-                isFixed && 'bg-emerald-50'
+                isFixed && 'bg-emerald-50',
+                // Right shadow on last visible column
+                isLast && 'shadow-[-2px_0_4px_-2px_rgba(0,0,0,0.1)]'
               )}
             >
               <div className="flex flex-col items-center">
@@ -116,28 +122,32 @@ const GridRow = memo(function GridRow({
       <td
         className={cn(
           'sticky left-0 z-10 bg-white',
-          'min-w-[100px] h-12 px-3',
+          'min-w-[100px] h-14 px-3',
           'text-left text-gray-700',
           'border-b border-gray-100',
-          isGhost && 'italic'
+          isGhost && 'italic',
+          // Shadow for sticky column effect
+          'shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]'
         )}
       >
         <span className="truncate block max-w-[120px]">{participant.name}</span>
       </td>
 
       {/* Vote cells for each date option */}
-      {dateOptions.map((option) => {
+      {dateOptions.map((option, index) => {
         const isFixed = fixedDateIds.includes(option.id)
         const answer = participant.answers[option.id] || null
+        const isLast = index === dateOptions.length - 1
 
         return (
           <td
             key={option.id}
             className={cn(
-              'min-w-[80px] h-12 px-1',
+              'min-w-[90px] h-14 px-2',
               'text-center',
               'border-b border-gray-100',
-              isFixed && 'bg-emerald-50/50'
+              isFixed && 'bg-emerald-50/50',
+              isLast && 'shadow-[-2px_0_4px_-2px_rgba(0,0,0,0.1)]'
             )}
           >
             <VoteCell
@@ -154,18 +164,69 @@ const GridRow = memo(function GridRow({
 })
 
 /**
+ * Scroll Indicator Component
+ */
+function ScrollIndicators({
+  canScrollLeft,
+  canScrollRight,
+  onScrollLeft,
+  onScrollRight,
+}: {
+  canScrollLeft: boolean
+  canScrollRight: boolean
+  onScrollLeft: () => void
+  onScrollRight: () => void
+}) {
+  if (!canScrollLeft && !canScrollRight) return null
+
+  return (
+    <div className="flex items-center justify-center gap-2 py-2 md:hidden">
+      <button
+        onClick={onScrollLeft}
+        disabled={!canScrollLeft}
+        className={cn(
+          'flex items-center justify-center w-10 h-10 rounded-full',
+          'transition-all duration-200',
+          canScrollLeft
+            ? 'bg-primary text-white shadow-md active:scale-95'
+            : 'bg-gray-100 text-gray-300 cursor-not-allowed'
+        )}
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+      <span className="text-sm text-gray-500">เลื่อนดูวันที่เพิ่มเติม</span>
+      <button
+        onClick={onScrollRight}
+        disabled={!canScrollRight}
+        className={cn(
+          'flex items-center justify-center w-10 h-10 rounded-full',
+          'transition-all duration-200',
+          canScrollRight
+            ? 'bg-primary text-white shadow-md active:scale-95'
+            : 'bg-gray-100 text-gray-300 cursor-not-allowed'
+        )}
+      >
+        <ChevronRight className="h-5 w-5" />
+      </button>
+    </div>
+  )
+}
+
+/**
  * VotingGrid Component
  *
  * A responsive voting grid with sticky columns and rows.
- * - Header cells: min 80px width, 48px height, sticky top
- * - Name cells: min 100px width, 48px height, sticky left
- * - Vote cells: 44x44px (touch-friendly), centered, clickable
+ * - Header cells: min 90px width, 56px height, sticky top
+ * - Name cells: min 100px width, 56px height, sticky left
+ * - Vote cells: 48x48px (touch-friendly), centered, clickable
  *
  * Features:
  * - Horizontal scroll for many date options
  * - Sticky first column (participant names)
  * - Sticky header row (date options)
  * - Ghost mode styling for unconfirmed participants
+ * - Scroll indicators for mobile
+ * - Shadow effects on sticky columns
  */
 function VotingGridComponent({
   dateOptions,
@@ -178,6 +239,10 @@ function VotingGridComponent({
   showSummary = true,
   className,
 }: VotingGridProps) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(false)
+
   // Convert votes to participant rows if not provided
   const rows = useMemo<ParticipantRow[]>(() => {
     if (participantRows) return participantRows
@@ -228,6 +293,41 @@ function VotingGridComponent({
     [onVoteChange]
   )
 
+  // Check scroll position
+  const checkScroll = useCallback(() => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
+      setCanScrollLeft(scrollLeft > 10)
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10)
+    }
+  }, [])
+
+  useEffect(() => {
+    checkScroll()
+    const scrollEl = scrollRef.current
+    if (scrollEl) {
+      scrollEl.addEventListener('scroll', checkScroll)
+      window.addEventListener('resize', checkScroll)
+      return () => {
+        scrollEl.removeEventListener('scroll', checkScroll)
+        window.removeEventListener('resize', checkScroll)
+      }
+    }
+  }, [checkScroll, dateOptions])
+
+  // Scroll handlers
+  const handleScrollLeft = useCallback(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -150, behavior: 'smooth' })
+    }
+  }, [])
+
+  const handleScrollRight = useCallback(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 150, behavior: 'smooth' })
+    }
+  }, [])
+
   // Empty state
   if (dateOptions.length === 0) {
     return (
@@ -238,87 +338,110 @@ function VotingGridComponent({
   }
 
   return (
-    <div
-      className={cn(
-        'voting-grid-wrapper overflow-auto',
-        'max-w-full border border-gray-200 rounded-lg',
-        className
-      )}
-      style={{ maxHeight: 'calc(100vh - 300px)' }}
-    >
-      <table className="voting-grid border-collapse">
-        <GridHeader dateOptions={dateOptions} fixedDateIds={fixedDateIds} />
+    <div className={cn('space-y-2', className)}>
+      {/* Scroll indicators - only show on mobile when scrollable */}
+      <ScrollIndicators
+        canScrollLeft={canScrollLeft}
+        canScrollRight={canScrollRight}
+        onScrollLeft={handleScrollLeft}
+        onScrollRight={handleScrollRight}
+      />
 
-        <tbody>
-          {rows.length === 0 ? (
-            <tr>
-              <td
-                colSpan={dateOptions.length + 1}
-                className="text-center py-8 text-gray-500"
-              >
-                ยังไม่มีผู้เข้าร่วมโหวต
-              </td>
-            </tr>
-          ) : (
-            rows.map((participant, index) => (
-              <GridRow
-                key={participant.voteId || `ghost-${index}`}
-                participant={participant}
-                dateOptions={dateOptions}
-                fixedDateIds={fixedDateIds}
-                isEditable={isEditable}
-                onVoteChange={handleVoteChange}
-                isGhost={participant.isGhost}
-              />
-            ))
-          )}
-        </tbody>
-
-        {/* Summary footer row */}
-        {showSummary && rows.length > 0 && (
-          <tfoot className="bg-gray-50">
-            <tr>
-              <th
-                className={cn(
-                  'sticky left-0 z-10 bg-gray-50',
-                  'min-w-[100px] h-10 px-3',
-                  'text-left font-medium text-gray-600 text-sm',
-                  'border-t border-gray-200'
-                )}
-              >
-                สรุป
-              </th>
-              {dateOptions.map((option) => {
-                const summary = summaries[option.id]
-                const total = summary
-                  ? summary.yes + summary.maybe + summary.no
-                  : 0
-
-                return (
-                  <td
-                    key={option.id}
-                    className={cn(
-                      'min-w-[80px] h-10 px-2',
-                      'text-center text-sm',
-                      'border-t border-gray-200'
-                    )}
-                  >
-                    {total > 0 && (
-                      <div className="flex justify-center gap-1">
-                        <span className="text-emerald-600">{summary.yes}</span>
-                        <span className="text-gray-300">/</span>
-                        <span className="text-amber-600">{summary.maybe}</span>
-                        <span className="text-gray-300">/</span>
-                        <span className="text-rose-600">{summary.no}</span>
-                      </div>
-                    )}
-                  </td>
-                )
-              })}
-            </tr>
-          </tfoot>
+      <div
+        ref={scrollRef}
+        className={cn(
+          'voting-grid-wrapper overflow-auto',
+          'max-w-full border border-gray-200 rounded-lg',
+          // Hide scrollbar on mobile for cleaner look
+          'scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent',
+          'md:scrollbar-thumb-gray-300'
         )}
-      </table>
+        style={{ maxHeight: 'calc(100vh - 300px)', minHeight: '200px' }}
+      >
+        <table className="voting-grid border-collapse">
+          <GridHeader dateOptions={dateOptions} fixedDateIds={fixedDateIds} />
+
+          <tbody>
+            {rows.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={dateOptions.length + 1}
+                  className="text-center py-8 text-gray-500"
+                >
+                  ยังไม่มีผู้เข้าร่วมโหวต
+                </td>
+              </tr>
+            ) : (
+              rows.map((participant, index) => (
+                <GridRow
+                  key={participant.voteId || `ghost-${index}`}
+                  participant={participant}
+                  dateOptions={dateOptions}
+                  fixedDateIds={fixedDateIds}
+                  isEditable={isEditable}
+                  onVoteChange={handleVoteChange}
+                  isGhost={participant.isGhost}
+                />
+              ))
+            )}
+          </tbody>
+
+          {/* Summary footer row */}
+          {showSummary && rows.length > 0 && (
+            <tfoot className="bg-gray-50">
+              <tr>
+                <th
+                  className={cn(
+                    'sticky left-0 z-10 bg-gray-50',
+                    'min-w-[100px] h-12 px-3',
+                    'text-left font-medium text-gray-600 text-sm',
+                    'border-t border-gray-200',
+                    'shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]'
+                  )}
+                >
+                  สรุป
+                </th>
+                {dateOptions.map((option, index) => {
+                  const summary = summaries[option.id]
+                  const total = summary
+                    ? summary.yes + summary.maybe + summary.no
+                    : 0
+                  const isLast = index === dateOptions.length - 1
+
+                  return (
+                    <td
+                      key={option.id}
+                      className={cn(
+                        'min-w-[90px] h-12 px-2',
+                        'text-center text-sm',
+                        'border-t border-gray-200',
+                        isLast && 'shadow-[-2px_0_4px_-2px_rgba(0,0,0,0.1)]'
+                      )}
+                    >
+                      {total > 0 && (
+                        <div className="flex justify-center gap-1">
+                          <span className="text-emerald-600 font-medium">{summary.yes}</span>
+                          <span className="text-gray-300">/</span>
+                          <span className="text-amber-600">{summary.maybe}</span>
+                          <span className="text-gray-300">/</span>
+                          <span className="text-rose-600">{summary.no}</span>
+                        </div>
+                      )}
+                    </td>
+                  )
+                })}
+              </tr>
+            </tfoot>
+          )}
+        </table>
+      </div>
+
+      {/* Mobile swipe hint */}
+      {(canScrollLeft || canScrollRight) && (
+        <p className="text-center text-xs text-gray-400 md:hidden">
+          👆 เลื่อนซ้าย-ขวาเพื่อดูวันที่เพิ่มเติม
+        </p>
+      )}
     </div>
   )
 }

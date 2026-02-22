@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button, Input, Card, CardContent, Badge } from '@/components/ui'
+import { Button, Input, Card, CardContent, Badge, CalendarPicker } from '@/components/ui'
 import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createEventSchema } from '@/lib/validations'
@@ -340,13 +340,21 @@ export default function CreateEventPage() {
                         <CalendarDays className="h-4 w-4 text-primary" />
                         วันที่ <span className="text-destructive">*</span>
                       </label>
-                      <Input
-                        type="date"
-                        error={errors.dates?.[index]?.date?.message}
-                        {...register(`dates.${index}.date`)}
-                        className="cursor-pointer"
-                        onClick={() => setShowCustomDatePicker(index)}
+                      <Controller
+                        name={`dates.${index}.date`}
+                        control={control}
+                        render={({ field }) => (
+                          <CalendarPicker
+                            value={field.value}
+                            onChange={field.onChange}
+                            placeholder="เลือกวันที่"
+                            minDate={new Date()}
+                          />
+                        )}
                       />
+                      {errors.dates?.[index]?.date && (
+                        <p className="text-sm text-destructive">{errors.dates[index]?.date?.message}</p>
+                      )}
                     </div>
                     <div className="space-y-1.5">
                       <label className="flex items-center gap-1.5 text-sm font-medium text-foreground">

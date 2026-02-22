@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { eventApi, getThaiErrorMessage } from '@/lib/api/client'
+import { fireSuccessConfetti } from '@/lib/utils/confetti'
 import Link from 'next/link'
 import { ArrowLeft, CheckCircle, Loader2 } from 'lucide-react'
 
@@ -103,6 +104,9 @@ export default function FixDatePage() {
     setIsFixing(true)
     try {
       await eventApi.fixDate(eventId, { fixedDateIds: selectedDateIds }, organizerKey)
+
+      // Fire celebration confetti
+      fireSuccessConfetti()
 
       toast({
         title: 'ยืนยันวันที่สำเร็จ',

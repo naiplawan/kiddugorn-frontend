@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { Copy, Check, AlertTriangle, Share2, Settings } from 'lucide-react'
 import { toast } from 'sonner'
+import { useCelebration } from '@/hooks/useConfetti'
 
 interface EventCreationData {
   voteUrl: string
@@ -26,6 +27,9 @@ export default function CreatedPage() {
   const [copiedVote, setCopiedVote] = useState(false)
   const [copiedAdmin, setCopiedAdmin] = useState(false)
   const [copiedKey, setCopiedKey] = useState(false)
+
+  // Fire celebration confetti when page loads
+  useCelebration(500)
 
   useEffect(() => {
     // Try to get data from sessionStorage
