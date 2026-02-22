@@ -1,0 +1,280 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Brand Colors (for reference)
+ * Primary: #6366F1 (Indigo 500) -> hsl(239, 84%, 67%)
+ * Secondary: #FCD34D (Amber 300) -> hsl(45, 97%, 65%)
+ * Success: #10B981 (Emerald 500) -> hsl(160, 84%, 39%)
+ * Danger: #EF4444 (Red 500) -> hsl(0, 84%, 60%)
+ */
+
+@layer base {
+  html {
+    font-family: var(--font-kanit), system-ui, sans-serif;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :root {
+    /* Background and foreground */
+    --background: 0 0% 98%;           /* #F9FAFB - Very light gray */
+    --foreground: 220 15% 15%;        /* #1F2937 - Dark gray (not pure black) */
+
+    /* Card */
+    --card: 0 0% 100%;                /* White */
+    --card-foreground: 220 15% 15%;   /* Dark gray */
+
+    /* Popover */
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 15%;
+
+    /* Primary - Indigo */
+    --primary: 239 84% 67%;           /* #6366F1 - Indigo */
+    --primary-foreground: 0 0% 100%;  /* White text */
+
+    /* Secondary - Amber */
+    --secondary: 45 97% 65%;          /* #FCD34D - Amber */
+    --secondary-foreground: 220 15% 15%; /* Dark text */
+
+    /* Muted */
+    --muted: 220 15% 96%;             /* Light gray */
+    --muted-foreground: 220 15% 45%;  /* Medium gray */
+
+    /* Accent */
+    --accent: 239 84% 95%;            /* Light indigo */
+    --accent-foreground: 239 84% 30%; /* Dark indigo */
+
+    /* Destructive - Red */
+    --destructive: 0 84% 60%;         /* #EF4444 - Red */
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders and inputs */
+    --border: 220 15% 90%;            /* Light gray border */
+    --input: 220 15% 90%;
+    --ring: 239 84% 67%;              /* Indigo focus ring */
+
+    /* Chart colors */
+    --chart-1: 239 84% 67%;           /* Primary - Indigo */
+    --chart-2: 45 97% 65%;            /* Secondary - Amber */
+    --chart-3: 160 84% 39%;           /* Success - Emerald */
+    --chart-4: 0 84% 60%;             /* Danger - Red */
+    --chart-5: 280 65% 60%;           /* Purple */
+
+    /* Radius */
+    --radius: 0.75rem;                /* 12px - More rounded */
+
+    /* Custom brand colors (for direct use) */
+    --brand-primary: 239 84% 67%;
+    --brand-secondary: 45 97% 65%;
+    --brand-success: 160 84% 39%;
+    --brand-danger: 0 84% 60%;
+  }
+
+  .dark {
+    --background: 220 15% 8%;         /* Dark background */
+    --foreground: 0 0% 95%;           /* Light text */
+
+    --card: 220 15% 12%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 220 15% 12%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 239 84% 67%;           /* Same primary */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 45 80% 40%;          /* Darker amber for dark mode */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 15% 20%;
+    --muted-foreground: 220 15% 65%;
+
+    --accent: 239 84% 25%;
+    --accent-foreground: 0 0% 95%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 25%;
+    --input: 220 15% 25%;
+    --ring: 239 84% 67%;
+
+    --chart-1: 239 84% 67%;
+    --chart-2: 45 97% 65%;
+    --chart-3: 160 84% 39%;
+    --chart-4: 0 84% 60%;
+    --chart-5: 280 65% 60%;
+  }
+}
+
+@layer utilities {
+  .content-visibility-auto {
+    content-visibility: auto;
+  }
+
+  .content-visibility-hidden {
+    content-visibility: hidden;
+  }
+
+  .content-visibility-visible {
+    content-visibility: visible;
+  }
+
+  .contain-intrinsic-size-auto {
+    contain-intrinsic-size: auto;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Selection color */
+::selection {
+  background: hsl(var(--primary) / 0.2);
+  color: hsl(var(--foreground));
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Landing page specific styles */
+@layer components {
+  .gradient-hero {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.08) 0%,
+      hsl(var(--secondary) / 0.05) 50%,
+      hsl(var(--brand-success) / 0.05) 100%
+    );
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(280 65% 60%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Custom animations */
+@layer utilities {
+  .animate-bounce-slow {
+    animation: bounce-slow 3s ease-in-out infinite;
+  }
+
+  @keyframes bounce-slow {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-20px) rotate(2deg);
+    }
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+}
+
+/* Voting Grid Styles */
+@layer components {
+  /* Voting Grid - Sticky columns and rows */
+  .voting-grid th:first-child,
+  .voting-grid td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 10;
+    background: white;
+  }
+
+  .voting-grid thead th {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  /* Top-left corner cell needs higher z-index */
+  .voting-grid thead th:first-child {
+    z-index: 30;
+  }
+
+  /* Dark mode support for voting grid */
+  .dark .voting-grid th:first-child,
+  .dark .voting-grid td:first-child {
+    background: hsl(var(--card));
+  }
+
+  .dark .voting-grid thead th {
+    background: hsl(var(--card));
+  }
+
+  /* Ghost Mode - for unconfirmed/temporary participants */
+  .ghost-row {
+    opacity: 0.4;
+    font-style: italic;
+  }
+
+  .ghost-row:hover {
+    opacity: 0.6;
+  }
+
+  /* Fixed date highlight */
+  .fixed-date-column {
+    background-color: rgb(236 253 245 / 0.5); /* emerald-50 with transparency */
+  }
+
+  .dark .fixed-date-column {
+    background-color: rgb(6 78 59 / 0.2); /* emerald-900 with low opacity */
+  }
+}
