@@ -8,14 +8,35 @@ const FONT_URLS = {
   kanit: 'https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&display=swap',
 }
 
-async function loadFont() {
-  const response = await fetch(FONT_URLS.kanit)
-  const css = await response.text()
-  const fontUrlMatch = css.match(/url\((https:\/\/fonts\.gstatic\.com\/[^)]+)\)/)
-  if (!fontUrlMatch) return null
+// Cache font data at module level for edge runtime
+let cachedFontData: ArrayBuffer | null = null
+let fontLoadPromise: Promise<ArrayBuffer | null> | null = null
 
-  const fontResponse = await fetch(fontUrlMatch[1])
-  return fontResponse.arrayBuffer()
+async function loadFont(): Promise<ArrayBuffer | null> {
+  // Return cached font if available
+  if (cachedFontData) return cachedFontData
+
+  // Return existing promise if font is being loaded
+  if (fontLoadPromise) return fontLoadPromise
+
+  // Start loading and cache the promise
+  fontLoadPromise = (async () => {
+    try {
+      const response = await fetch(FONT_URLS.kanit)
+      const css = await response.text()
+      const fontUrlMatch = css.match(/url\((https:\/\/fonts\.gstatic\.com\/[^)]+)\)/)
+      if (!fontUrlMatch) return null
+
+      const fontResponse = await fetch(fontUrlMatch[1])
+      const fontData = await fontResponse.arrayBuffer()
+      cachedFontData = fontData
+      return fontData
+    } catch {
+      return null
+    }
+  })()
+
+  return fontLoadPromise
 }
 
 export async function GET(

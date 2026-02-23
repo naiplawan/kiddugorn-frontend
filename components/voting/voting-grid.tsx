@@ -31,13 +31,13 @@ interface VotingGridProps {
 
 interface GridHeaderProps {
   dateOptions: DateOption[]
-  fixedDateIds: string[]
+  fixedDateIdsSet: Set<string>
 }
 
 interface GridRowProps {
   participant: ParticipantRow
   dateOptions: DateOption[]
-  fixedDateIds: string[]
+  fixedDateIdsSet: Set<string>
   isEditable: boolean
   onVoteChange?: (
     dateOptionId: string,
@@ -51,7 +51,7 @@ interface GridRowProps {
  */
 const GridHeader = memo(function GridHeader({
   dateOptions,
-  fixedDateIds,
+  fixedDateIdsSet,
 }: GridHeaderProps) {
   return (
     <thead className="voting-grid-header">
@@ -72,7 +72,7 @@ const GridHeader = memo(function GridHeader({
 
         {/* Date option headers - sticky top */}
         {dateOptions.map((option, index) => {
-          const isFixed = fixedDateIds.includes(option.id)
+          const isFixed = fixedDateIdsSet.has(option.id)
           const isLast = index === dateOptions.length - 1
           return (
             <th
@@ -111,7 +111,7 @@ const GridHeader = memo(function GridHeader({
 const GridRow = memo(function GridRow({
   participant,
   dateOptions,
-  fixedDateIds,
+  fixedDateIdsSet,
   isEditable,
   onVoteChange,
   isGhost,
@@ -135,7 +135,7 @@ const GridRow = memo(function GridRow({
 
       {/* Vote cells for each date option */}
       {dateOptions.map((option, index) => {
-        const isFixed = fixedDateIds.includes(option.id)
+        const isFixed = fixedDateIdsSet.has(option.id)
         const answer = participant.answers[option.id] || null
         const isLast = index === dateOptions.length - 1
 
@@ -242,6 +242,14 @@ function VotingGridComponent({
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
+
+  // Convert fixedDateIds array to Set for O(1) lookups
+  const fixedDateIdsSet = useMemo(() => new Set(fixedDateIds), [fixedDateIds])
+
+  // Memoize date options map for O(1) lookups
+  const dateOptionsMap = useMemo(() => {
+    return new Map(dateOptions.map(opt => [opt.id, opt]))
+  }, [dateOptions])
 
   // Convert votes to participant rows if not provided
   const rows = useMemo<ParticipantRow[]>(() => {
@@ -359,7 +367,7 @@ function VotingGridComponent({
         style={{ maxHeight: 'calc(100vh - 300px)', minHeight: '200px' }}
       >
         <table className="voting-grid border-collapse">
-          <GridHeader dateOptions={dateOptions} fixedDateIds={fixedDateIds} />
+          <GridHeader dateOptions={dateOptions} fixedDateIdsSet={fixedDateIdsSet} />
 
           <tbody>
             {rows.length === 0 ? (
@@ -377,7 +385,7 @@ function VotingGridComponent({
                   key={participant.voteId || `ghost-${index}`}
                   participant={participant}
                   dateOptions={dateOptions}
-                  fixedDateIds={fixedDateIds}
+                  fixedDateIdsSet={fixedDateIdsSet}
                   isEditable={isEditable}
                   onVoteChange={handleVoteChange}
                   isGhost={participant.isGhost}

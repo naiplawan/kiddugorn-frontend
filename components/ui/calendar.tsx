@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from './button'
 import { cn } from '@/lib/utils'
@@ -184,6 +185,8 @@ export function CalendarPicker({
   className,
 }: CalendarPickerProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [position, setPosition] = useState({ top: 0, left: 0, width: 0 })
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
   const selectedDate = useMemo(() => {
     if (!value) return undefined
@@ -207,9 +210,28 @@ export function CalendarPicker({
     return `${dayName} ${day} ${month} ${year}`
   }, [])
 
+  // Calculate position when opening
+  useEffect(() => {
+    if (isOpen && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect()
+      const calendarHeight = 320 // Approximate height of calendar
+
+      // Check if there's enough space below, if not show above
+      const spaceBelow = window.innerHeight - rect.bottom
+      const showAbove = spaceBelow < calendarHeight + 20
+
+      setPosition({
+        top: showAbove ? rect.top - calendarHeight - 8 : rect.bottom + 8,
+        left: rect.left,
+        width: rect.width,
+      })
+    }
+  }, [isOpen])
+
   return (
     <div className={cn('relative', className)}>
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
@@ -234,15 +256,25 @@ export function CalendarPicker({
             onClick={() => setIsOpen(false)}
           />
 
-          {/* Calendar dropdown */}
-          <div className="absolute top-full left-0 right-0 mt-1 z-50 bg-background border rounded-lg shadow-lg">
-            <Calendar
-              selected={selectedDate}
-              onSelect={handleSelect}
-              minDate={minDate}
-              disabled={disabled ? () => true : undefined}
-            />
-          </div>
+          {/* Calendar dropdown - rendered via Portal */}
+          {createPortal(
+            <div
+              className="fixed z-[100] bg-background border rounded-lg shadow-lg animate-in fade-in zoom-in-95 duration-200"
+              style={{
+                top: `${position.top}px`,
+                left: `${position.left}px`,
+                width: `${Math.max(position.width, 320)}px`, // Minimum width for calendar
+              }}
+            >
+              <Calendar
+                selected={selectedDate}
+                onSelect={handleSelect}
+                minDate={minDate}
+                disabled={disabled ? () => true : undefined}
+              />
+            </div>,
+            document.body
+          )}
         </>
       )}
     </div>

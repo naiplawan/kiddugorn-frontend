@@ -666,7 +666,6 @@ export default function CreateEventPage() {
             ) : (
               <Button
                 type="submit"
-                onClick={handleSubmit(onSubmit)}
                 isLoading={isSubmitting}
                 className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-md hover:shadow-lg hover:shadow-primary/25"
               >
