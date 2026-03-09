@@ -365,24 +365,37 @@ export function Hero() {
               </Link>
             </div>
 
-            {/* Trust indicators */}
-            <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 text-sm text-muted-foreground md:justify-start mb-6">
-              {[
+            {/* Color mapping for Tailwind classes (Tailwind cannot process dynamic class names at runtime) */}
+            {(() => {
+              const colorMap: Record<string, { bg: string, border: string, text: string, shadow: string }> = {
+                green: { bg: 'bg-green-500', border: 'border-green-200', text: 'text-green-500', shadow: 'shadow-green-200' },
+                primary: { bg: 'bg-primary', border: 'border-primary/20', text: 'text-primary', shadow: 'shadow-primary/20' },
+                amber: { bg: 'bg-amber-500', border: 'border-amber-200', text: 'text-amber-500', shadow: 'shadow-amber-200' },
+              }
+              const trustIndicators = [
                 { icon: CheckCircle2, text: 'ใช้งานได้ทันที', color: 'green' },
                 { icon: Heart, text: 'ไม่ต้องสมัคร', color: 'primary' },
                 { icon: Star, text: 'ฟรี!', color: 'amber' },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className={`group flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-md hover:shadow-lg transition-all cursor-default border border-transparent hover:border-${item.color}-200`}
-                  style={{ animationDelay: `${i * 0.1}s` }}
-                >
-                  <div className={`h-2.5 w-2.5 rounded-full bg-${item.color}-500 animate-pulse shadow-lg shadow-${item.color}-200`}></div>
-                  <item.icon className={`w-4 h-4 text-${item.color}-500 opacity-0 group-hover:opacity-100 transition-opacity -ml-1`} />
-                  <span className="group-hover:font-medium transition-all">{item.text}</span>
+              ]
+              return (
+                <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 text-sm text-muted-foreground md:justify-start mb-6">
+                  {trustIndicators.map((item, i) => {
+                    const colors = colorMap[item.color] || colorMap.primary
+                    return (
+                      <div
+                        key={i}
+                        className="group flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-md hover:shadow-lg transition-all cursor-default border border-gray-100"
+                        style={{ animationDelay: `${i * 0.1}s` }}
+                      >
+                        <div className={`h-2.5 w-2.5 rounded-full ${colors.bg} animate-pulse shadow-lg ${colors.shadow}`}></div>
+                        <item.icon className={`w-4 h-4 ${colors.text} opacity-0 group-hover:opacity-100 transition-opacity -ml-1`} />
+                        <span className="group-hover:font-medium transition-all">{item.text}</span>
+                      </div>
+                    )
+                  })}
                 </div>
-              ))}
-            </div>
+              )
+            })()}
 
             {/* Live Activity Indicator */}
             <div className="hidden md:block">

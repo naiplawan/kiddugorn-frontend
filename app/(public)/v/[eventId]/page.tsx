@@ -85,7 +85,7 @@ export default function VotingPage() {
     if (!event) return []
     // The event from API should have dateOptions
     // If using the old format with dates array, transform it
-    return (event as any).dateOptions || []
+    return event.dateOptions || []
   }, [event])
 
   // Transform votes to participant rows
@@ -248,7 +248,7 @@ export default function VotingPage() {
           {event.description && (
             <p className="text-gray-600 mt-2">{event.description}</p>
           )}
-          {(event as any).location && (
+          {event.location && (
             <p className="text-gray-500 mt-2 flex items-center gap-2">
               <svg
                 className="h-4 w-4"
@@ -269,11 +269,11 @@ export default function VotingPage() {
                   d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
-              {(event as any).location}
+              {event.location}
             </p>
           )}
           <p className="text-sm text-gray-400 mt-4">
-            สร้างโดย {(event as any).creatorName || 'ไม่ระบุ'}
+            สร้างโดย {event.creatorName || 'ไม่ระบุ'}
           </p>
         </div>
 
@@ -399,7 +399,7 @@ export default function VotingPage() {
               <VotingGrid
                 dateOptions={dateOptions}
                 votes={votes || []}
-                fixedDateIds={(event as any).fixedDateIds || []}
+                fixedDateIds={event.fixedDateIds || []}
                 participantRows={participantRows}
                 isEditable={false}
                 showSummary={true}

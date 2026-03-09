@@ -73,9 +73,10 @@ export default function AdminDashboardPage() {
           location: data.location,
           status: data.status || 'OPEN',
           fixedDateIds: data.fixedDateIds || [],
-          dateOptions: (data as any).dateOptions || [],
+          dateOptions: data.dateOptions || [],
           createdAt: data.createdAt,
           expiresAt: data.expiresAt,
+          // _count is optional in the Event type, so the cast is needed
           _count: (data as any)._count,
         })
       } catch (error) {

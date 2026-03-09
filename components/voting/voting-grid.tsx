@@ -59,10 +59,10 @@ const GridHeader = memo(function GridHeader({
         {/* Name column header - sticky left */}
         <th
           className={cn(
-            'sticky left-0 z-20 bg-white',
+            'sticky left-0 z-20 bg-background',
             'min-w-[100px] h-14 px-3',
-            'text-left font-semibold text-gray-700',
-            'border-b border-gray-200',
+            'text-left font-semibold text-foreground',
+            'border-b border-border',
             // Shadow for sticky column effect
             'shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]'
           )}
@@ -78,11 +78,11 @@ const GridHeader = memo(function GridHeader({
             <th
               key={option.id}
               className={cn(
-                'sticky top-0 z-10 bg-white',
+                'sticky top-0 z-10 bg-background',
                 'min-w-[90px] h-14 px-2',
-                'text-center font-semibold text-gray-700',
-                'border-b border-gray-200',
-                isFixed && 'bg-emerald-50',
+                'text-center font-semibold text-foreground',
+                'border-b border-border',
+                isFixed && 'bg-emerald-50 dark:bg-emerald-950',
                 // Right shadow on last visible column
                 isLast && 'shadow-[-2px_0_4px_-2px_rgba(0,0,0,0.1)]'
               )}
@@ -121,10 +121,10 @@ const GridRow = memo(function GridRow({
       {/* Participant name - sticky left */}
       <td
         className={cn(
-          'sticky left-0 z-10 bg-white',
+          'sticky left-0 z-10 bg-background',
           'min-w-[100px] h-14 px-3',
-          'text-left text-gray-700',
-          'border-b border-gray-100',
+          'text-left text-foreground',
+          'border-b border-border',
           isGhost && 'italic',
           // Shadow for sticky column effect
           'shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]'
@@ -145,8 +145,8 @@ const GridRow = memo(function GridRow({
             className={cn(
               'min-w-[90px] h-14 px-2',
               'text-center',
-              'border-b border-gray-100',
-              isFixed && 'bg-emerald-50/50',
+              'border-b border-border',
+              isFixed && 'bg-emerald-50/50 dark:bg-emerald-950/30',
               isLast && 'shadow-[-2px_0_4px_-2px_rgba(0,0,0,0.1)]'
             )}
           >
@@ -189,12 +189,12 @@ function ScrollIndicators({
           'transition-all duration-200',
           canScrollLeft
             ? 'bg-primary text-white shadow-md active:scale-95'
-            : 'bg-gray-100 text-gray-300 cursor-not-allowed'
+            : 'bg-muted text-muted-foreground cursor-not-allowed'
         )}
       >
         <ChevronLeft className="h-5 w-5" />
       </button>
-      <span className="text-sm text-gray-500">เลื่อนดูวันที่เพิ่มเติม</span>
+      <span className="text-sm text-muted-foreground">เลื่อนดูวันที่เพิ่มเติม</span>
       <button
         onClick={onScrollRight}
         disabled={!canScrollRight}
@@ -203,7 +203,7 @@ function ScrollIndicators({
           'transition-all duration-200',
           canScrollRight
             ? 'bg-primary text-white shadow-md active:scale-95'
-            : 'bg-gray-100 text-gray-300 cursor-not-allowed'
+            : 'bg-muted text-muted-foreground cursor-not-allowed'
         )}
       >
         <ChevronRight className="h-5 w-5" />
@@ -339,7 +339,7 @@ function VotingGridComponent({
   // Empty state
   if (dateOptions.length === 0) {
     return (
-      <div className={cn('text-center py-8 text-gray-500', className)}>
+      <div className={cn('text-center py-8 text-muted-foreground', className)}>
         ยังไม่มีตัวเลือกวันที่
       </div>
     )
@@ -359,10 +359,10 @@ function VotingGridComponent({
         ref={scrollRef}
         className={cn(
           'voting-grid-wrapper overflow-auto',
-          'max-w-full border border-gray-200 rounded-lg',
+          'max-w-full border border-border rounded-lg',
           // Hide scrollbar on mobile for cleaner look
-          'scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent',
-          'md:scrollbar-thumb-gray-300'
+          'scrollbar-thin scrollbar-thumb-muted-foreground/30 scrollbar-track-transparent',
+          'md:scrollbar-thumb-muted-foreground/30'
         )}
         style={{ maxHeight: 'calc(100vh - 300px)', minHeight: '200px' }}
       >
@@ -374,7 +374,7 @@ function VotingGridComponent({
               <tr>
                 <td
                   colSpan={dateOptions.length + 1}
-                  className="text-center py-8 text-gray-500"
+                  className="text-center py-8 text-muted-foreground"
                 >
                   ยังไม่มีผู้เข้าร่วมโหวต
                 </td>
@@ -396,14 +396,14 @@ function VotingGridComponent({
 
           {/* Summary footer row */}
           {showSummary && rows.length > 0 && (
-            <tfoot className="bg-gray-50">
+            <tfoot className="bg-muted/50">
               <tr>
                 <th
                   className={cn(
-                    'sticky left-0 z-10 bg-gray-50',
+                    'sticky left-0 z-10 bg-muted/50',
                     'min-w-[100px] h-12 px-3',
-                    'text-left font-medium text-gray-600 text-sm',
-                    'border-t border-gray-200',
+                    'text-left font-medium text-muted-foreground text-sm',
+                    'border-t border-border',
                     'shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]'
                   )}
                 >
@@ -422,7 +422,7 @@ function VotingGridComponent({
                       className={cn(
                         'min-w-[90px] h-12 px-2',
                         'text-center text-sm',
-                        'border-t border-gray-200',
+                        'border-t border-border',
                         isLast && 'shadow-[-2px_0_4px_-2px_rgba(0,0,0,0.1)]'
                       )}
                     >
@@ -446,7 +446,7 @@ function VotingGridComponent({
 
       {/* Mobile swipe hint */}
       {(canScrollLeft || canScrollRight) && (
-        <p className="text-center text-xs text-gray-400 md:hidden">
+        <p className="text-center text-xs text-muted-foreground/60 md:hidden">
           👆 เลื่อนซ้าย-ขวาเพื่อดูวันที่เพิ่มเติม
         </p>
       )}

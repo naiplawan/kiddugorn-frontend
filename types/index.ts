@@ -1,6 +1,6 @@
 // ==================== Enums ====================
 
-export type EventStatus = 'OPEN' | 'LOCKED' | 'draft' | 'active' | 'fixed' | 'cancelled'
+export type EventStatus = 'OPEN' | 'LOCKED' | 'DRAFT' | 'ACTIVE' | 'FIXED' | 'CANCELLED'
 
 export type AnswerValue = 'yes' | 'maybe' | 'no'
 
@@ -23,6 +23,9 @@ export interface Event {
   updatedAt?: string
   expiresAt?: string
   participantCount?: number
+  _count?: {
+    votes: number
+  }
   dateOptions?: DateOption[]
   // Legacy fields
   dates?: EventDate[]
@@ -111,6 +114,16 @@ export interface StoredVoteToken {
 
 // ==================== API Request Types ====================
 
+// Type aliases for backward compatibility with API client
+export type CreateEventInput = CreateEventRequest
+export type UpdateEventInput = UpdateEventRequest
+export type FixDateInput = FixDateRequest
+
+export interface CastVoteInput {
+  name: string
+  answers: Record<string, AnswerValue>
+}
+
 export interface CreateEventRequest {
   title: string
   description?: string
@@ -132,6 +145,7 @@ export interface CreateEventResponse {
 export interface UpdateEventRequest {
   title?: string
   description?: string
+  location?: string
   dateOptions?: string[]
   deadline?: string
 }
@@ -151,7 +165,8 @@ export interface UpdateVoteRequest {
 }
 
 export interface FixDateRequest {
-  dateOptionIds: string[]
+  dateOptionIds?: string[]
+  fixedDateIds?: string[]
 }
 
 export interface LockEventRequest {
@@ -209,40 +224,6 @@ export const ERROR_MESSAGES: Record<ErrorCode, string> = {
   RATE_LIMIT_EXCEEDED: 'พิมพ์เร็วเกินไป รอสักครู่นะ',
 }
 
-// ==================== Legacy API Types ====================
-
-export interface CreateEventInput {
-  title: string
-  description?: string
-  location?: string
-  creatorName: string
-  creatorEmail?: string
-  dates: CreateEventDateInput[]
-}
-
-export interface CreateEventDateInput {
-  date: string
-  time?: string
-}
-
-export interface UpdateEventInput {
-  title?: string
-  description?: string
-  location?: string
-  dates?: CreateEventDateInput[]
-}
-
-export interface CastVoteInput {
-  voterName: string
-  votes: {
-    eventDateId: string
-    response: VoteResponse
-  }[]
-}
-
-export interface FixDateInput {
-  fixedDateIds: string[]
-}
 
 // ==================== Form Types ====================
 

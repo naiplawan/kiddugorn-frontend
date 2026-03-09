@@ -235,13 +235,14 @@ html {
     position: sticky;
     left: 0;
     z-index: 10;
-    background: white;
+    background: hsl(var(--background));
   }
 
   .voting-grid thead th {
     position: sticky;
     top: 0;
     z-index: 20;
+    background: hsl(var(--background));
   }
 
   /* Top-left corner cell needs higher z-index */
@@ -252,11 +253,11 @@ html {
   /* Dark mode support for voting grid */
   .dark .voting-grid th:first-child,
   .dark .voting-grid td:first-child {
-    background: hsl(var(--card));
+    background: hsl(var(--background));
   }
 
   .dark .voting-grid thead th {
-    background: hsl(var(--card));
+    background: hsl(var(--background));
   }
 
   /* Ghost Mode - for unconfirmed/temporary participants */

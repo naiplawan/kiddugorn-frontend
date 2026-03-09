@@ -69,7 +69,7 @@ export default function FixDatePage() {
         setEvent({
           id: data.id,
           title: data.title || '',
-          dateOptions: (data as any).dateOptions || [],
+          dateOptions: data.dateOptions || [],
           fixedDateIds: data.fixedDateIds || [],
         })
         // Pre-select already fixed dates

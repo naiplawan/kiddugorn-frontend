@@ -1,41 +1,63 @@
 # คิดดูก่อน (Kiddugorn)
 
-A scheduling and voting app for groups - no login required.
+A scheduling and voting web application for groups - no login required. Perfect for planning events, meetings, or activities with friends and colleagues.
+
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **UI**: React 19, Tailwind CSS
+- **State Management**: Zustand
+- **Data Fetching**: SWR
+- **Forms**: React Hook Form + Zod validation
+- **Components**: Radix UI primitives
+
+## Features
+
+- **Create Events** - Set up polls with multiple date options
+- **Voting** - Vote Yes / Maybe / No for each date
+- **Share Links** - Share voting pages with friends via URL
+- **Visual Summary** - See vote counts with progress bars
+- **Admin Dashboard** - Organize events, lock/unlock voting
+- **Fix Final Date** - Select winning date option
+- **Mobile-First** - Responsive design for all devices
+- **Thai Language** - Full Thai language support
 
 ## Project Structure
 
 ```
-kiddugorn/
-├── frontend/          # Next.js 15 + React 19 frontend
-├── backend/           # Express + Prisma API
-├── shared-types/      # Shared TypeScript types
-├── doc/              # Documentation (PRD, TECH, Design, IMPLEMENT)
-└── package.json      # Root package for monorepo management
+kiddugorn-frontend/
+├── app/                    # Next.js App Router pages
+│   ├── (admin)/           # Admin dashboard routes
+│   │   └── a/[eventId]/   # Event management
+│   ├── (auth)/            # Authentication routes
+│   │   ├── login/
+│   │   └── register/
+│   ├── (public)/          # Public routes
+│   │   ├── create/        # Create new event
+│   │   ├── v/[eventId]/   # Vote on event
+│   │   ├── checkout/      # Payment pages
+│   │   └── pricing/       # Pricing page
+│   └── layout.tsx         # Root layout
+├── components/             # React components
+│   ├── ui/                # Base UI components
+│   ├── voting/            # Voting components
+│   ├── create/            # Event creation
+│   └── shared/            # Shared components
+├── hooks/                 # Custom React hooks
+├── lib/                   # Utilities & API client
+│   ├── api/               # API client
+│   ├── auth/              # Authentication
+│   └── swr/               # SWR hooks
+└── types/                 # TypeScript type definitions
 ```
-
-## Tech Stack
-
-### Frontend
-- Next.js 15 (App Router)
-- React 19
-- TypeScript
-- Tailwind CSS
-- SWR for data fetching
-- Zustand for state
-- React Hook Form + Zod
-
-### Backend
-- Node.js + Express
-- TypeScript
-- Prisma ORM
-- PostgreSQL (Supabase)
-- Zod validation
 
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
-- PostgreSQL database
+- API backend (see [kiddugorn-backend](https://github.com/kiddugorn/backend))
 
 ### Installation
 
@@ -44,32 +66,35 @@ kiddugorn/
 npm install
 
 # Setup environment variables
-cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
-
-# Setup database
-npm run db:migrate
-
-# Start development servers
-npm run dev
+cp .env.example .env.local
+# Edit .env.local with your API URL
 ```
 
 ### Development
 
-- Frontend runs on http://localhost:3000
-- Backend runs on http://localhost:3001
+```bash
+# Run development server
+npm run dev
+```
 
-## Features
+The app will be available at http://localhost:3000
 
-- Create events with multiple date options
-- Share voting links with friends
-- Vote: Yes / Maybe / No
-- Visual summary of votes
-- Admin dashboard for organizers
-- Fix final date
-- Lock/Unlock events
-- Mobile-first responsive design
-- Thai language support
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `NEXT_PUBLIC_API_URL` | Backend API URL | http://localhost:3001/api |
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+## API Integration
+
+This frontend connects to a REST API. Make sure the backend is running and accessible via `NEXT_PUBLIC_API_URL`.
 
 ## License
 

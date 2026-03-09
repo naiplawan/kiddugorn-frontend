@@ -25,9 +25,9 @@ function VisualSummaryComponent({
 
   // Calculate percentages, avoid division by zero
   const total = yes + maybe + no
-  const yesPercent = total > 0 ? (yes / totalParticipants) * 100 : 0
-  const maybePercent = total > 0 ? (maybe / totalParticipants) * 100 : 0
-  const noPercent = total > 0 ? (no / totalParticipants) * 100 : 0
+  const yesPercent = total > 0 ? (yes / total) * 100 : 0
+  const maybePercent = total > 0 ? (maybe / total) * 100 : 0
+  const noPercent = total > 0 ? (no / total) * 100 : 0
 
   // If no votes, show placeholder
   if (total === 0) {
