@@ -1,6 +1,6 @@
 'use client'
 
-import { Check, Sparkles } from 'lucide-react'
+import { Check } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { PricingTier } from '@/lib/config/subscription'
 import { cn } from '@/lib/utils'
@@ -22,7 +22,7 @@ export function PricingCard({ tier, billingCycle, isCurrent, onSelect }: Pricing
   return (
     <div
       className={cn(
-        'relative rounded-2xl border-2 p-6 transition-all duration-300',
+        'relative rounded-xl border-2 p-6 transition-all duration-300',
         'flex flex-col h-full',
         tier.isPopular
           ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10 scale-105 z-10'
@@ -33,8 +33,7 @@ export function PricingCard({ tier, billingCycle, isCurrent, onSelect }: Pricing
       {/* Popular Badge */}
       {tier.isPopular && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">
-            <Sparkles className="h-3 w-3" />
+          <span className="inline-flex items-center gap-1 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
             ยอดนิยม
           </span>
         </div>

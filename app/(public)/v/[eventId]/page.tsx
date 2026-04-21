@@ -7,6 +7,7 @@ import { useEvent, useVotes } from '@/lib/swr/hooks'
 import { apiClient, getThaiErrorMessage, ApiError } from '@/lib/api/client'
 import { formatThaiDateFull, formatThaiTime } from '@/lib/utils/dates'
 import { VotingGrid } from '@/components/voting'
+import { MapPin } from 'lucide-react'
 import { toast } from 'sonner'
 import type { AnswerValue, ParticipantRow, DateOption, Vote } from '@/types'
 
@@ -204,12 +205,12 @@ export default function VotingPage() {
   // Loading state
   if (isLoadingEvent || isLoadingVotes) {
     return (
-      <main className="min-h-screen bg-gray-50 py-8 px-4">
+      <main className="min-h-screen bg-background py-8 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="animate-pulse space-y-4">
-            <div className="h-8 bg-gray-200 rounded w-1/2"></div>
-            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-            <div className="h-64 bg-gray-200 rounded"></div>
+            <div className="h-8 bg-muted rounded-xl w-1/2"></div>
+            <div className="h-4 bg-muted rounded-xl w-3/4"></div>
+            <div className="h-64 bg-muted rounded-xl"></div>
           </div>
         </div>
       </main>
@@ -219,12 +220,12 @@ export default function VotingPage() {
   // Error state
   if (isEventError || !event) {
     return (
-      <main className="min-h-screen bg-gray-50 py-8 px-4">
-        <div className="container mx-auto max-w-2xl text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+      <main className="min-h-screen bg-background py-8 px-4">
+        <div className="container mx-auto max-w-2xl text-center py-16">
+          <h1 className="font-display text-3xl text-foreground mb-4 tracking-tight">
             ไม่พบกิจกรรม
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="text-muted-foreground mb-8">
             กิจกรรมที่คุณค้นหาไม่มีอยู่หรืออาจถูกลบไปแล้ว
           </p>
           <Button onClick={() => window.location.href = '/'}>
@@ -238,48 +239,30 @@ export default function VotingPage() {
   const isEventLocked = event.status === 'LOCKED'
 
   return (
-    <main className="min-h-screen bg-gray-50 py-8 px-4">
+    <main className="min-h-screen bg-background py-8 md:py-12 px-4">
       <div className="container mx-auto max-w-4xl">
         {/* Event Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+        <div className="mb-8 md:mb-10">
+          <h1 className="font-display text-3xl md:text-4xl text-foreground tracking-tight">
             {event.title}
           </h1>
           {event.description && (
-            <p className="text-gray-600 mt-2">{event.description}</p>
+            <p className="text-muted-foreground mt-3 text-base leading-relaxed">{event.description}</p>
           )}
           {event.location && (
-            <p className="text-gray-500 mt-2 flex items-center gap-2">
-              <svg
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
+            <p className="text-muted-foreground mt-2 flex items-center gap-2 text-sm">
+              <MapPin className="h-4 w-4 shrink-0" strokeWidth={1.75} />
               {event.location}
             </p>
           )}
-          <p className="text-sm text-gray-400 mt-4">
+          <p className="text-sm text-muted-foreground/80 mt-4">
             สร้างโดย {event.creatorName || 'ไม่ระบุ'}
           </p>
         </div>
 
         {/* Locked event warning */}
         {isEventLocked && (
-          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
             <p className="text-amber-800 font-medium">
               กิจกรรมนี้ถูกล็อกแล้ว ไม่สามารถโหวตเพิ่มเติมได้
             </p>
@@ -296,31 +279,31 @@ export default function VotingPage() {
           <CardContent className="space-y-4">
             {!isEventLocked && (
               <>
-                <p className="text-gray-600">
+                <p className="text-muted-foreground">
                   เลือกวันที่คุณสะดวกที่จะเข้าร่วมกิจกรรม
                 </p>
 
                 {/* Your vote row - for new voters */}
                 <div className="space-y-4">
-                  <div className="border border-primary/30 rounded-lg p-4 bg-primary/5">
-                    <h3 className="font-medium text-gray-900 mb-3">คะแนนโหวตของคุณ</h3>
+                  <div className="border border-primary/30 rounded-xl p-4 bg-primary/5">
+                    <h3 className="font-medium text-foreground mb-3">คะแนนโหวตของคุณ</h3>
 
                     {/* Inline voting for current user */}
                     <div className="flex flex-wrap gap-2">
                       {dateOptions.map((option) => (
                         <div
                           key={option.id}
-                          className="flex items-center gap-2 border border-gray-200 rounded-lg p-2"
+                          className="flex items-center gap-2 border border-border rounded-xl p-2"
                         >
-                          <span className="text-sm text-gray-700">{option.label}</span>
+                          <span className="text-sm text-foreground/80">{option.label}</span>
                           <div className="flex gap-1">
                             <button
                               type="button"
                               onClick={() => handleVoteChange(option.id, 'yes')}
-                              className={`px-2 py-1 rounded text-xs transition-colors ${
+                              className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                                 localAnswers[option.id] === 'yes'
-                                  ? 'bg-emerald-500 text-white'
-                                  : 'bg-gray-100 text-gray-600 hover:bg-emerald-100'
+                                  ? 'bg-emerald-600 text-white'
+                                  : 'bg-muted text-foreground/70 hover:bg-emerald-100 hover:text-emerald-900'
                               }`}
                             >
                               ว่าง
@@ -328,10 +311,10 @@ export default function VotingPage() {
                             <button
                               type="button"
                               onClick={() => handleVoteChange(option.id, 'maybe')}
-                              className={`px-2 py-1 rounded text-xs transition-colors ${
+                              className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                                 localAnswers[option.id] === 'maybe'
                                   ? 'bg-amber-500 text-white'
-                                  : 'bg-gray-100 text-gray-600 hover:bg-amber-100'
+                                  : 'bg-muted text-foreground/70 hover:bg-amber-100 hover:text-amber-900'
                               }`}
                             >
                               อาจจะ
@@ -339,10 +322,10 @@ export default function VotingPage() {
                             <button
                               type="button"
                               onClick={() => handleVoteChange(option.id, 'no')}
-                              className={`px-2 py-1 rounded text-xs transition-colors ${
+                              className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                                 localAnswers[option.id] === 'no'
-                                  ? 'bg-rose-500 text-white'
-                                  : 'bg-gray-100 text-gray-600 hover:bg-rose-100'
+                                  ? 'bg-rose-600 text-white'
+                                  : 'bg-muted text-foreground/70 hover:bg-rose-100 hover:text-rose-900'
                               }`}
                             >
                               ไม่ว่าง
@@ -355,7 +338,7 @@ export default function VotingPage() {
 
                   {/* Voter Name */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-foreground mb-2">
                       ชื่อของคุณ
                     </label>
                     <Input
@@ -392,7 +375,7 @@ export default function VotingPage() {
           </CardHeader>
           <CardContent>
             {participantRows.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">
+              <p className="text-muted-foreground text-center py-8">
                 ยังไม่มีผู้เข้าร่วมโหวต
               </p>
             ) : (
@@ -409,17 +392,17 @@ export default function VotingPage() {
         </Card>
 
         {/* Legend */}
-        <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-gray-500">
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-4 rounded bg-emerald-100 border-2 border-emerald-500" />
+        <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
+          <div className="flex items-center gap-1.5">
+            <div className="w-4 h-4 rounded-md bg-emerald-100 border-2 border-emerald-500" />
             <span>ว่าง</span>
           </div>
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-4 rounded bg-amber-100 border-2 border-amber-400" />
+          <div className="flex items-center gap-1.5">
+            <div className="w-4 h-4 rounded-md bg-amber-100 border-2 border-amber-400" />
             <span>อาจจะ</span>
           </div>
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-4 rounded bg-rose-100 border-2 border-rose-500" />
+          <div className="flex items-center gap-1.5">
+            <div className="w-4 h-4 rounded-md bg-rose-100 border-2 border-rose-500" />
             <span>ไม่ว่าง</span>
           </div>
         </div>

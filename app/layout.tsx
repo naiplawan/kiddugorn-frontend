@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Kanit } from 'next/font/google'
+import { Kanit, Chonburi } from 'next/font/google'
 import { Providers } from '@/components/providers'
 import './globals.css'
 
@@ -7,6 +7,13 @@ const kanit = Kanit({
   subsets: ['latin', 'thai'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-kanit',
+  display: 'swap',
+})
+
+const chonburi = Chonburi({
+  subsets: ['latin', 'thai'],
+  weight: ['400'],
+  variable: '--font-chonburi',
   display: 'swap',
 })
 
@@ -40,7 +47,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
-  themeColor: '#6366F1',
+  themeColor: '#DA811B',
 }
 
 export default function RootLayout({
@@ -49,7 +56,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="th" className={kanit.variable}>
+    <html lang="th" className={`${kanit.variable} ${chonburi.variable}`}>
       <body className={`${kanit.className} min-h-screen bg-background antialiased`}>
         <Providers>
           {children}

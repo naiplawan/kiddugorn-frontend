@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui'
 import { ProBadge } from '@/components/ui/pro-badge'
-import { Check, Sparkles, X, Lock } from 'lucide-react'
+import { Check, Lock } from 'lucide-react'
 import Link from 'next/link'
 
 interface PaywallModalProps {
@@ -55,7 +55,7 @@ export function PaywallModal({ isOpen, onClose, feature, currentCount, limit }: 
           <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
             <Lock className="h-8 w-8 text-primary" />
           </div>
-          <DialogTitle className="text-xl flex items-center justify-center gap-2">
+          <DialogTitle className="font-display text-2xl tracking-tight flex items-center justify-center gap-2">
             {featureInfo.title}
           </DialogTitle>
           <DialogDescription className="text-center">
@@ -88,12 +88,11 @@ export function PaywallModal({ isOpen, onClose, feature, currentCount, limit }: 
             <Button variant="outline" onClick={onClose} className="flex-1">
               ภายหลัง
             </Button>
-            <Link href="/pricing" className="flex-1">
-              <Button className="w-full">
-                <Sparkles className="h-4 w-4 mr-1" />
+            <Button asChild className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90">
+              <Link href="/pricing">
                 อัปเกรด
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         </div>
 

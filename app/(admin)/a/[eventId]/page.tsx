@@ -151,11 +151,11 @@ export default function AdminDashboardPage() {
 
   if (!organizerKey) {
     return (
-      <main className="min-h-screen bg-gray-50 py-8 px-4">
+      <main className="min-h-screen bg-background py-8 px-4">
         <div className="container mx-auto max-w-4xl text-center">
-          <div className="bg-white rounded-xl shadow-sm border p-8">
-            <h1 className="text-xl font-bold text-gray-900 mb-2">ไม่มีสิทธิ์เข้าถึง</h1>
-            <p className="text-gray-600 mb-4">กรุณาใช้ลิงก์แอดมินที่ถูกต้อง</p>
+          <div className="bg-card rounded-xl shadow-sm border p-8">
+            <h1 className="font-display text-2xl text-foreground mb-2 tracking-tight">ไม่มีสิทธิ์เข้าถึง</h1>
+            <p className="text-muted-foreground mb-4">กรุณาใช้ลิงก์แอดมินที่ถูกต้อง</p>
             <Link href="/">
               <Button>กลับหน้าหลัก</Button>
             </Link>
@@ -167,7 +167,7 @@ export default function AdminDashboardPage() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-gray-50 py-8 px-4">
+      <main className="min-h-screen bg-background py-8 px-4">
         <div className="container mx-auto max-w-4xl flex items-center justify-center py-20">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
@@ -177,11 +177,11 @@ export default function AdminDashboardPage() {
 
   if (!event) {
     return (
-      <main className="min-h-screen bg-gray-50 py-8 px-4">
+      <main className="min-h-screen bg-background py-8 px-4">
         <div className="container mx-auto max-w-4xl text-center">
-          <div className="bg-white rounded-xl shadow-sm border p-8">
-            <h1 className="text-xl font-bold text-gray-900 mb-2">ไม่พบกิจกรรม</h1>
-            <p className="text-gray-600 mb-4">กิจกรรมนี้อาจถูกลบหรือหมดอายุแล้ว</p>
+          <div className="bg-card rounded-xl shadow-sm border p-8">
+            <h1 className="font-display text-2xl text-foreground mb-2 tracking-tight">ไม่พบกิจกรรม</h1>
+            <p className="text-muted-foreground mb-4">กิจกรรมนี้อาจถูกลบหรือหมดอายุแล้ว</p>
             <Link href="/">
               <Button>กลับหน้าหลัก</Button>
             </Link>
@@ -196,7 +196,7 @@ export default function AdminDashboardPage() {
   const publicUrl = `/v/${eventId}`
 
   return (
-    <main className="min-h-screen bg-gray-50 py-8 px-4">
+    <main className="min-h-screen bg-background py-8 px-4">
       <div className="container mx-auto max-w-4xl">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
@@ -210,14 +210,14 @@ export default function AdminDashboardPage() {
                 {isLocked ? '🔒 ล็อกแล้ว' : '🟢 กำลังดำเนินการ'}
               </span>
             </div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+            <h1 className="font-display text-3xl md:text-4xl text-foreground tracking-tight">
               {event.title}
             </h1>
             {event.description && (
-              <p className="text-gray-600 mt-1">{event.description}</p>
+              <p className="text-muted-foreground mt-1">{event.description}</p>
             )}
             {event.location && (
-              <p className="text-gray-500 text-sm mt-1">📍 {event.location}</p>
+              <p className="text-muted-foreground text-sm mt-1">📍 {event.location}</p>
             )}
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -284,19 +284,19 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             {event.dateOptions.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">ไม่มีตัวเลือกวันที่</p>
+              <p className="text-muted-foreground text-center py-4">ไม่มีตัวเลือกวันที่</p>
             ) : (
               event.dateOptions.map((dateOption) => {
                 const isFixed = event.fixedDateIds.includes(dateOption.id)
                 return (
                   <div
                     key={dateOption.id}
-                    className={`border rounded-lg p-4 ${isFixed ? 'border-primary bg-primary/5' : 'border-gray-200'}`}
+                    className={`border rounded-lg p-4 ${isFixed ? 'border-primary bg-primary/5' : 'border-border'}`}
                   >
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <p className="font-medium text-gray-900 truncate">
+                          <p className="font-medium text-foreground truncate">
                             {dateOption.label}
                           </p>
                           {isFixed && (
@@ -308,7 +308,7 @@ export default function AdminDashboardPage() {
                         {dateOption.voteSummary && (
                           <div className="flex gap-3 text-sm mt-1">
                             <span className="text-green-600">โอเค: {dateOption.voteSummary.yes}</span>
-                            <span className="text-gray-500">คิดดูก่อน: {dateOption.voteSummary.maybe}</span>
+                            <span className="text-muted-foreground">คิดดูก่อน: {dateOption.voteSummary.maybe}</span>
                             <span className="text-red-500">ไม่ได้: {dateOption.voteSummary.no}</span>
                           </div>
                         )}
@@ -337,7 +337,7 @@ export default function AdminDashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600 text-sm mb-4">
+            <p className="text-muted-foreground text-sm mb-4">
               การลบกิจกรรมจะลบข้อมูลทั้งหมด รวมถึงผลโหวต และไม่สามารถย้อนกลับได้
             </p>
             <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
@@ -387,9 +387,9 @@ export default function AdminDashboardPage() {
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4">
-      <p className="text-sm text-gray-500">{label}</p>
-      <p className="text-xl font-semibold text-gray-900 mt-1">{value}</p>
+    <div className="bg-card rounded-xl border border-border p-4">
+      <p className="text-sm text-muted-foreground">{label}</p>
+      <p className="text-xl font-semibold text-foreground mt-1">{value}</p>
     </div>
   )
 }

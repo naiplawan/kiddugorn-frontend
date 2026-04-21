@@ -14,14 +14,14 @@ interface ConfettiOptions {
   ticks?: number
 }
 
-// Default Thai-friendly colors (Thai flag inspired + primary)
+// Confetti palette — Thai flag (red/white/blue) + brand warm accents
 const DEFAULT_COLORS = [
   '#E11D48', // Red (Thai flag)
   '#1E40AF', // Blue (Thai flag)
   '#FFFFFF', // White (Thai flag)
-  '#667EEA', // Primary purple
+  '#DA811B', // Ochre (brand primary)
+  '#C54828', // Chili (brand accent)
   '#F59E0B', // Gold/Saffron
-  '#10B981', // Green
 ]
 
 // Simple canvas confetti implementation

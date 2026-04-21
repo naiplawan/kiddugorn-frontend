@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Brand Colors (for reference)
- * Primary: #6366F1 (Indigo 500) -> hsl(239, 84%, 67%)
- * Secondary: #FCD34D (Amber 300) -> hsl(45, 97%, 65%)
- * Success: #10B981 (Emerald 500) -> hsl(160, 84%, 39%)
- * Danger: #EF4444 (Red 500) -> hsl(0, 84%, 60%)
+/* Kiddugorn — Thai-market warmth palette.
+ * Light-mode is the primary surface (daytime, phone, LINE share).
+ * Dark mode tokens defined for parity but not a design priority.
+ * Hue 32-42 = ochre/mango. Hue 12 = chili. Hue 130 = warm forest green.
+ * Neutrals all tinted toward the ochre hue for cohesion.
  */
 
 @layer base {
@@ -20,94 +20,91 @@
   }
 
   :root {
-    /* Background and foreground */
-    --background: 0 0% 98%;           /* #F9FAFB - Very light gray */
-    --foreground: 220 15% 15%;        /* #1F2937 - Dark gray (not pure black) */
+    /* Surfaces */
+    --background: 42 38% 96%;           /* Jasmine cream */
+    --foreground: 30 15% 18%;           /* Warm charcoal */
 
-    /* Card */
-    --card: 0 0% 100%;                /* White */
-    --card-foreground: 220 15% 15%;   /* Dark gray */
+    --card: 40 40% 99%;                 /* Near-white warm */
+    --card-foreground: 30 15% 18%;
 
-    /* Popover */
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 15%;
+    --popover: 40 40% 99%;
+    --popover-foreground: 30 15% 18%;
 
-    /* Primary - Indigo */
-    --primary: 239 84% 67%;           /* #6366F1 - Indigo */
-    --primary-foreground: 0 0% 100%;  /* White text */
+    /* Primary — tumeric / mango ochre */
+    --primary: 32 78% 48%;
+    --primary-foreground: 40 30% 98%;
 
-    /* Secondary - Amber */
-    --secondary: 45 97% 65%;          /* #FCD34D - Amber */
-    --secondary-foreground: 220 15% 15%; /* Dark text */
+    /* Secondary — warm coral (between ochre and chili) */
+    --secondary: 18 65% 62%;
+    --secondary-foreground: 30 15% 15%;
 
-    /* Muted */
-    --muted: 220 15% 96%;             /* Light gray */
-    --muted-foreground: 220 15% 45%;  /* Medium gray */
+    /* Muted — cream surfaces */
+    --muted: 40 30% 92%;
+    --muted-foreground: 30 10% 38%;
 
-    /* Accent */
-    --accent: 239 84% 95%;            /* Light indigo */
-    --accent-foreground: 239 84% 30%; /* Dark indigo */
+    /* Accent — reserved for the primary CTA. Chili red. Used sparingly. */
+    --accent: 12 72% 46%;
+    --accent-foreground: 40 30% 98%;
 
-    /* Destructive - Red */
-    --destructive: 0 84% 60%;         /* #EF4444 - Red */
-    --destructive-foreground: 0 0% 100%;
+    /* Destructive — deeper chili */
+    --destructive: 8 72% 46%;
+    --destructive-foreground: 40 30% 98%;
 
-    /* Borders and inputs */
-    --border: 220 15% 90%;            /* Light gray border */
-    --input: 220 15% 90%;
-    --ring: 239 84% 67%;              /* Indigo focus ring */
+    /* Borders */
+    --border: 40 25% 87%;
+    --input: 40 25% 87%;
+    --ring: 32 78% 48%;
 
-    /* Chart colors */
-    --chart-1: 239 84% 67%;           /* Primary - Indigo */
-    --chart-2: 45 97% 65%;            /* Secondary - Amber */
-    --chart-3: 160 84% 39%;           /* Success - Emerald */
-    --chart-4: 0 84% 60%;             /* Danger - Red */
-    --chart-5: 280 65% 60%;           /* Purple */
+    /* Chart palette — all warm */
+    --chart-1: 32 78% 48%;              /* Ochre */
+    --chart-2: 12 72% 46%;              /* Chili */
+    --chart-3: 130 38% 40%;             /* Warm forest green */
+    --chart-4: 18 65% 62%;              /* Coral */
+    --chart-5: 42 68% 55%;              /* Marigold */
 
-    /* Radius */
-    --radius: 0.75rem;                /* 12px - More rounded */
+    --radius: 0.75rem;
 
-    /* Custom brand colors (for direct use) */
-    --brand-primary: 239 84% 67%;
-    --brand-secondary: 45 97% 65%;
-    --brand-success: 160 84% 39%;
-    --brand-danger: 0 84% 60%;
+    /* Brand tokens */
+    --brand-primary: 32 78% 48%;
+    --brand-secondary: 18 65% 62%;
+    --brand-success: 130 38% 40%;
+    --brand-danger: 12 72% 46%;
   }
 
   .dark {
-    --background: 220 15% 8%;         /* Dark background */
-    --foreground: 0 0% 95%;           /* Light text */
+    --background: 25 12% 10%;
+    --foreground: 40 20% 92%;
 
-    --card: 220 15% 12%;
-    --card-foreground: 0 0% 95%;
+    --card: 25 10% 13%;
+    --card-foreground: 40 20% 92%;
 
-    --popover: 220 15% 12%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 25 10% 13%;
+    --popover-foreground: 40 20% 92%;
 
-    --primary: 239 84% 67%;           /* Same primary */
-    --primary-foreground: 0 0% 100%;
+    --primary: 35 80% 58%;
+    --primary-foreground: 25 20% 10%;
 
-    --secondary: 45 80% 40%;          /* Darker amber for dark mode */
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 18 55% 50%;
+    --secondary-foreground: 40 20% 95%;
 
-    --muted: 220 15% 20%;
-    --muted-foreground: 220 15% 65%;
+    --muted: 25 10% 18%;
+    --muted-foreground: 40 15% 68%;
 
-    --accent: 239 84% 25%;
-    --accent-foreground: 0 0% 95%;
+    --accent: 12 65% 50%;
+    --accent-foreground: 40 20% 95%;
 
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 8 65% 48%;
+    --destructive-foreground: 40 20% 95%;
 
-    --border: 220 15% 25%;
-    --input: 220 15% 25%;
-    --ring: 239 84% 67%;
+    --border: 25 10% 22%;
+    --input: 25 10% 22%;
+    --ring: 35 80% 58%;
 
-    --chart-1: 239 84% 67%;
-    --chart-2: 45 97% 65%;
-    --chart-3: 160 84% 39%;
-    --chart-4: 0 84% 60%;
-    --chart-5: 280 65% 60%;
+    --chart-1: 35 80% 58%;
+    --chart-2: 12 65% 50%;
+    --chart-3: 130 38% 48%;
+    --chart-4: 18 55% 50%;
+    --chart-5: 42 68% 62%;
   }
 }
 
@@ -129,7 +126,7 @@
   }
 }
 
-/* Custom scrollbar */
+/* Scrollbar — tinted to the warm neutral system */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -149,68 +146,41 @@
   background: hsl(var(--muted-foreground) / 0.5);
 }
 
-/* Focus styles for accessibility */
+/* Accessible focus */
 *:focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
 }
 
-/* Selection color */
 ::selection {
-  background: hsl(var(--primary) / 0.2);
+  background: hsl(var(--primary) / 0.25);
   color: hsl(var(--foreground));
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Landing page specific styles */
+/* Landing surface — subtle warm wash, single hue. */
 @layer components {
   .gradient-hero {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--primary) / 0.08) 0%,
-      hsl(var(--secondary) / 0.05) 50%,
-      hsl(var(--brand-success) / 0.05) 100%
-    );
-  }
-
-  .gradient-text {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(280 65% 60%));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, hsl(var(--primary) / 0.10), transparent 70%),
+      hsl(var(--background));
   }
 }
 
-/* Custom animations */
+/* Motion — kept minimal. Most ambient animations will be removed in the
+ * hero redesign phase; these remain because non-landing surfaces use them.
+ */
 @layer utilities {
-  .animate-bounce-slow {
-    animation: bounce-slow 3s ease-in-out infinite;
-  }
-
-  @keyframes bounce-slow {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
 
   @keyframes float {
-    0%, 100% {
-      transform: translateY(0) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-20px) rotate(2deg);
-    }
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
   }
 
   .animate-pulse-soft {
@@ -218,18 +188,48 @@ html {
   }
 
   @keyframes pulse-soft {
-    0%, 100% {
-      opacity: 1;
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  /* Hero: single intentional motion moment — vote bars fill on mount.
+   * Uses scaleX (GPU-accelerated transform) instead of animating layout width.
+   * Each bar sets its own --fill target and --delay.
+   */
+  .animate-vote-fill {
+    transform-origin: left center;
+    transform: scaleX(0);
+    animation: voteFill 1200ms cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0ms) forwards;
+  }
+
+  @keyframes voteFill {
+    to { transform: scaleX(var(--fill, 1)); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-vote-fill {
+      transform: scaleX(var(--fill, 1));
+      animation: none !important;
     }
-    50% {
-      opacity: 0.7;
+    .animate-float,
+    .animate-pulse-soft,
+    .animate-bounce,
+    .animate-bounce-slow,
+    .animate-bounce-subtle,
+    .animate-pulse,
+    .animate-pulse-subtle,
+    .animate-ping,
+    .animate-spin-slow,
+    .animate-float-delayed,
+    .animate-float-random,
+    .animate-dash {
+      animation: none !important;
     }
   }
 }
 
 /* Voting Grid Styles */
 @layer components {
-  /* Voting Grid - Sticky columns and rows */
   .voting-grid th:first-child,
   .voting-grid td:first-child {
     position: sticky;
@@ -245,12 +245,10 @@ html {
     background: hsl(var(--background));
   }
 
-  /* Top-left corner cell needs higher z-index */
   .voting-grid thead th:first-child {
     z-index: 30;
   }
 
-  /* Dark mode support for voting grid */
   .dark .voting-grid th:first-child,
   .dark .voting-grid td:first-child {
     background: hsl(var(--background));
@@ -260,7 +258,6 @@ html {
     background: hsl(var(--background));
   }
 
-  /* Ghost Mode - for unconfirmed/temporary participants */
   .ghost-row {
     opacity: 0.4;
     font-style: italic;
@@ -270,12 +267,11 @@ html {
     opacity: 0.6;
   }
 
-  /* Fixed date highlight */
   .fixed-date-column {
-    background-color: rgb(236 253 245 / 0.5); /* emerald-50 with transparency */
+    background-color: hsl(var(--primary) / 0.08);
   }
 
   .dark .fixed-date-column {
-    background-color: rgb(6 78 59 / 0.2); /* emerald-900 with low opacity */
+    background-color: hsl(var(--primary) / 0.15);
   }
 }

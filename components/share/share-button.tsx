@@ -120,7 +120,7 @@ export function ShareButton({
           <div className="space-y-4">
             {/* Preview Image */}
             {ogImageUrl && (
-              <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-lg border bg-muted">
+              <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-xl border border-border bg-muted">
                 <img
                   src={ogImageUrl}
                   alt="Share card preview"
@@ -131,7 +131,7 @@ export function ShareButton({
 
             {/* Copy Link */}
             <div className="flex items-center gap-2">
-              <div className="flex-1 bg-muted rounded-lg px-3 py-2 text-sm truncate">
+              <div className="flex-1 bg-muted rounded-xl px-3 py-2 text-sm truncate">
                 {voteUrl}
               </div>
               <Button
@@ -141,7 +141,7 @@ export function ShareButton({
                 className="shrink-0"
               >
                 {copied ? (
-                  <Check className="h-4 w-4 text-green-500" />
+                  <Check className="h-4 w-4 text-[hsl(var(--chart-3))]" strokeWidth={2.5} />
                 ) : (
                   <Copy className="h-4 w-4" />
                 )}

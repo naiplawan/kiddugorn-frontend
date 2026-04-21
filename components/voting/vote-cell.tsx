@@ -64,10 +64,10 @@ function getStateConfig(state: VoteCellState) {
       }
     default:
       return {
-        bgClass: 'bg-gray-100',
+        bgClass: 'bg-muted',
         borderClass: 'border-2 border-transparent',
         icon: null,
-        iconClass: 'text-gray-400',
+        iconClass: 'text-muted-foreground',
         ariaLabel: 'Empty - No vote yet',
       }
   }
@@ -115,17 +115,13 @@ function VoteCellComponent({
       disabled={isFixed}
       aria-label={config.ariaLabel}
       className={cn(
-        // Base styles - 44x44px minimum for touch
         'flex items-center justify-center',
         'w-11 h-11 min-w-[44px] min-h-[44px]',
-        'rounded-lg transition-all duration-150',
-        // Focus styles for accessibility
+        'rounded-xl transition-all duration-150',
         'focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-1',
-        // Interaction states
         isEditable && !isFixed && 'cursor-pointer hover:scale-105 active:scale-95',
         isFixed && 'cursor-not-allowed opacity-60',
         !isEditable && 'cursor-default',
-        // State-based styles
         config.bgClass,
         config.borderClass,
         className

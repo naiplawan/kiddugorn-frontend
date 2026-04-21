@@ -129,9 +129,9 @@ export default function FixDatePage() {
     return (
       <main className="min-h-screen bg-muted/30 py-8 px-4">
         <div className="container mx-auto max-w-2xl text-center">
-          <div className="bg-white rounded-xl shadow-sm border p-8">
-            <h1 className="text-xl font-bold text-gray-900 mb-2">ไม่มีสิทธิ์เข้าถึง</h1>
-            <p className="text-gray-600 mb-4">กรุณาใช้ลิงก์แอดมินที่ถูกต้อง</p>
+          <div className="bg-card rounded-xl shadow-sm border p-8">
+            <h1 className="font-display text-2xl text-foreground mb-2 tracking-tight">ไม่มีสิทธิ์เข้าถึง</h1>
+            <p className="text-muted-foreground mb-4">กรุณาใช้ลิงก์แอดมินที่ถูกต้อง</p>
             <Link href="/">
               <Button>กลับหน้าหลัก</Button>
             </Link>
@@ -162,7 +162,7 @@ export default function FixDatePage() {
             <ArrowLeft className="h-4 w-4 mr-2" />
             กลับไปหน้าแอดมิน
           </Link>
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+          <h1 className="font-display text-3xl md:text-4xl text-foreground tracking-tight">
             เลือกวันที่แน่นอน
           </h1>
           <p className="text-muted-foreground mt-2">

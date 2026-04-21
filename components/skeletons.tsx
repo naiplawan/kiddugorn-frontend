@@ -13,7 +13,7 @@ export function Skeleton({ className }: SkeletonProps) {
   return (
     <div
       className={cn(
-        'animate-pulse rounded-md bg-gray-200',
+        'animate-pulse rounded-md bg-muted',
         className
       )}
     />
@@ -25,7 +25,7 @@ export function Skeleton({ className }: SkeletonProps) {
  */
 export function CardSkeleton({ className }: SkeletonProps) {
   return (
-    <div className={cn('rounded-xl border bg-white p-4 space-y-3', className)}>
+    <div className={cn('rounded-xl border border-border bg-card p-4 space-y-3', className)}>
       <Skeleton className="h-6 w-3/4" />
       <Skeleton className="h-4 w-full" />
       <Skeleton className="h-4 w-2/3" />
@@ -64,7 +64,7 @@ export function StatsSkeleton() {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
       {[1, 2, 3, 4].map((i) => (
-        <div key={i} className="bg-white rounded-lg border p-4 space-y-2">
+        <div key={i} className="bg-card rounded-xl border border-border p-4 space-y-2">
           <Skeleton className="h-4 w-16" />
           <Skeleton className="h-6 w-12" />
         </div>
@@ -102,7 +102,7 @@ export function VotingGridSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols
   return (
     <div className="border rounded-lg overflow-hidden">
       {/* Header */}
-      <div className="flex bg-gray-50 border-b p-3 gap-2">
+      <div className="flex bg-muted/30 border-b p-3 gap-2">
         <Skeleton className="h-6 w-24 shrink-0" />
         {Array.from({ length: cols }).map((_, i) => (
           <Skeleton key={i} className="h-6 w-20" />
@@ -120,7 +120,7 @@ export function VotingGridSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols
       ))}
 
       {/* Footer */}
-      <div className="flex bg-gray-50 p-3 gap-2">
+      <div className="flex bg-muted/30 p-3 gap-2">
         <Skeleton className="h-8 w-24 shrink-0" />
         {Array.from({ length: cols }).map((_, i) => (
           <Skeleton key={i} className="h-8 w-20" />
@@ -167,7 +167,7 @@ export function FormSkeleton({ fields = 4 }: { fields?: number }) {
  */
 export function PageSkeleton() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-background py-8 px-4">
       <div className="container mx-auto max-w-4xl space-y-6">
         <EventHeaderSkeleton />
         <StatsSkeleton />
@@ -194,11 +194,11 @@ export function LoadingSpinner({
   return (
     <div className={cn('flex flex-col items-center justify-center py-12', className)}>
       <div className="relative">
-        <div className="w-12 h-12 border-4 border-gray-200 rounded-full" />
+        <div className="w-12 h-12 border-4 border-border rounded-full" />
         <div className="absolute top-0 left-0 w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
       {text && (
-        <p className="mt-4 text-sm text-gray-500">{text}</p>
+        <p className="mt-4 text-sm text-muted-foreground">{text}</p>
       )}
     </div>
   )

@@ -54,7 +54,8 @@ const config: Config = {
   		},
   		fontFamily: {
   			sans: ['var(--font-kanit)', 'system-ui', 'sans-serif'],
-  			kanit: ['var(--font-kanit)', 'system-ui', 'sans-serif']
+  			kanit: ['var(--font-kanit)', 'system-ui', 'sans-serif'],
+  			display: ['var(--font-chonburi)', 'serif']
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

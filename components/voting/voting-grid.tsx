@@ -188,7 +188,7 @@ function ScrollIndicators({
           'flex items-center justify-center w-10 h-10 rounded-full',
           'transition-all duration-200',
           canScrollLeft
-            ? 'bg-primary text-white shadow-md active:scale-95'
+            ? 'bg-primary text-primary-foreground shadow-md active:scale-95'
             : 'bg-muted text-muted-foreground cursor-not-allowed'
         )}
       >
@@ -202,7 +202,7 @@ function ScrollIndicators({
           'flex items-center justify-center w-10 h-10 rounded-full',
           'transition-all duration-200',
           canScrollRight
-            ? 'bg-primary text-white shadow-md active:scale-95'
+            ? 'bg-primary text-primary-foreground shadow-md active:scale-95'
             : 'bg-muted text-muted-foreground cursor-not-allowed'
         )}
       >
@@ -359,7 +359,7 @@ function VotingGridComponent({
         ref={scrollRef}
         className={cn(
           'voting-grid-wrapper overflow-auto',
-          'max-w-full border border-border rounded-lg',
+          'max-w-full border border-border rounded-xl',
           // Hide scrollbar on mobile for cleaner look
           'scrollbar-thin scrollbar-thumb-muted-foreground/30 scrollbar-track-transparent',
           'md:scrollbar-thumb-muted-foreground/30'
@@ -427,12 +427,12 @@ function VotingGridComponent({
                       )}
                     >
                       {total > 0 && (
-                        <div className="flex justify-center gap-1">
-                          <span className="text-emerald-600 font-medium">{summary.yes}</span>
-                          <span className="text-gray-300">/</span>
-                          <span className="text-amber-600">{summary.maybe}</span>
-                          <span className="text-gray-300">/</span>
-                          <span className="text-rose-600">{summary.no}</span>
+                        <div className="flex justify-center gap-1 tabular-nums">
+                          <span className="text-emerald-700 font-medium">{summary.yes}</span>
+                          <span className="text-muted-foreground/40">/</span>
+                          <span className="text-amber-700">{summary.maybe}</span>
+                          <span className="text-muted-foreground/40">/</span>
+                          <span className="text-rose-700">{summary.no}</span>
                         </div>
                       )}
                     </td>
@@ -446,8 +446,8 @@ function VotingGridComponent({
 
       {/* Mobile swipe hint */}
       {(canScrollLeft || canScrollRight) && (
-        <p className="text-center text-xs text-muted-foreground/60 md:hidden">
-          👆 เลื่อนซ้าย-ขวาเพื่อดูวันที่เพิ่มเติม
+        <p className="text-center text-xs text-muted-foreground/70 md:hidden">
+          เลื่อนซ้าย-ขวาเพื่อดูวันที่เพิ่มเติม
         </p>
       )}
     </div>

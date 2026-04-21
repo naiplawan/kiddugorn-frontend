@@ -24,16 +24,16 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between px-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="relative h-10 w-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-lg shadow-primary/20 overflow-hidden group-hover:shadow-xl transition-shadow">
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <div className="relative h-9 w-9 rounded-xl bg-primary/10 overflow-hidden">
             <Image
               src="/logo.png"
-              alt="Kiddugorn"
+              alt="คิดดูก่อน"
               fill
-              className="object-contain p-1.5"
+              className="object-contain p-1"
             />
           </div>
-          <span className="text-xl font-bold hidden sm:inline">คิดดูก่อน</span>
+          <span className="font-display text-xl tracking-tight hidden sm:inline">คิดดูก่อน</span>
         </Link>
 
         {/* Navigation Links */}
@@ -80,8 +80,8 @@ export function Navbar() {
                   <p className="text-xs text-muted-foreground">{user.email}</p>
                   {isPro && (
                     <div className="flex items-center gap-1.5 mt-1">
-                      <Crown className="h-3.5 w-3.5 text-amber-500" />
-                      <span className="text-xs font-medium text-amber-600">
+                      <Crown className="h-3.5 w-3.5 text-primary" />
+                      <span className="text-xs font-medium text-primary">
                         {subscription?.tier.replace('PRO_', 'Pro ')}
                       </span>
                     </div>
@@ -108,7 +108,7 @@ export function Navbar() {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  className="cursor-pointer text-red-600 focus:text-red-600"
+                  className="cursor-pointer text-destructive focus:text-destructive"
                   onClick={() => logout()}
                 >
                   <LogOut className="mr-2 h-4 w-4" />

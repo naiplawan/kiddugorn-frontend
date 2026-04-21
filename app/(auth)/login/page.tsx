@@ -55,7 +55,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background">
       <div className="w-full max-w-md">
         {/* Back button */}
         <Link
@@ -66,22 +66,22 @@ export default function LoginPage() {
           กลับหน้าหลัก
         </Link>
 
-        <div className="bg-card rounded-2xl shadow-xl border p-8">
+        <div className="bg-card rounded-xl shadow-lg border p-8">
           {/* Logo */}
-          <div className="flex items-center justify-center gap-2 mb-6">
-            <div className="relative h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-lg shadow-primary/20 overflow-hidden">
+          <div className="flex items-center justify-center gap-2.5 mb-8">
+            <div className="relative h-10 w-10 rounded-xl bg-primary/10 overflow-hidden">
               <Image
                 src="/logo.png"
-                alt="Kiddugorn"
+                alt="คิดดูก่อน"
                 fill
-                className="object-contain p-2"
+                className="object-contain p-1.5"
               />
             </div>
-            <span className="text-2xl font-bold">คิดดูก่อน</span>
+            <span className="font-display text-2xl tracking-tight">คิดดูก่อน</span>
           </div>
 
-          <h1 className="text-2xl font-bold text-center mb-2">เข้าสู่ระบบ</h1>
-          <p className="text-muted-foreground text-center mb-6">
+          <h1 className="font-display text-3xl text-center mb-2 tracking-tight">เข้าสู่ระบบ</h1>
+          <p className="text-muted-foreground text-center mb-8 text-sm">
             เข้าสู่ระบบเพื่อจัดการกิจกรรมของคุณ
           </p>
 

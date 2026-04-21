@@ -133,18 +133,18 @@ export default function CreatedPage() {
   const organizerKey = eventData?.organizerKey || ''
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-primary/5 via-background to-background py-8 px-4">
+    <main className="min-h-screen bg-background py-8 md:py-12 px-4">
       <div className="container mx-auto max-w-xl">
         {/* Success Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-600 mb-4">
-            <Check className="h-8 w-8" />
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[hsl(var(--chart-3))]/15 text-[hsl(var(--chart-3))] mb-5">
+            <Check className="h-8 w-8" strokeWidth={2.5} />
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+          <h1 className="font-display text-3xl md:text-4xl text-foreground tracking-tight">
             สร้างกิจกรรมสำเร็จ!
           </h1>
-          <p className="text-muted-foreground mt-2">
-            กิจกรรมของคุณถูกสร้างเรียบร้อยแล้ว แชร์ลิงก์ให้เพื่อนมาโหวตกันเลย
+          <p className="text-muted-foreground mt-3 text-base max-w-sm mx-auto leading-relaxed">
+            แชร์ลิงก์ให้เพื่อนมาโหวตกันได้เลย
           </p>
         </div>
 
@@ -175,7 +175,7 @@ export default function CreatedPage() {
                 type="text"
                 readOnly
                 value={voteUrl}
-                className="flex-1 rounded-lg border border-input bg-muted px-4 py-2.5 text-muted-foreground text-sm truncate"
+                className="flex-1 rounded-xl border border-input bg-muted px-4 py-2.5 text-muted-foreground text-sm truncate"
               />
               <Button
                 type="button"
@@ -183,7 +183,7 @@ export default function CreatedPage() {
                 onClick={() => copyToClipboard(voteUrl, 'vote')}
                 className="shrink-0"
               >
-                {copiedVote ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
+                {copiedVote ? <Check className="h-4 w-4 text-[hsl(var(--chart-3))]" /> : <Copy className="h-4 w-4" />}
               </Button>
             </div>
             {typeof navigator !== 'undefined' && typeof navigator.share === 'function' && (
@@ -226,7 +226,7 @@ export default function CreatedPage() {
                   type="text"
                   readOnly
                   value={adminUrl}
-                  className="flex-1 rounded-lg border border-input bg-muted px-4 py-2.5 text-muted-foreground text-sm truncate"
+                  className="flex-1 rounded-xl border border-input bg-muted px-4 py-2.5 text-muted-foreground text-sm truncate"
                 />
                 <Button
                   type="button"
@@ -234,7 +234,7 @@ export default function CreatedPage() {
                   onClick={() => copyToClipboard(adminUrl, 'admin')}
                   className="shrink-0"
                 >
-                  {copiedAdmin ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
+                  {copiedAdmin ? <Check className="h-4 w-4 text-[hsl(var(--chart-3))]" strokeWidth={2.5} /> : <Copy className="h-4 w-4" />}
                 </Button>
               </div>
             </div>
@@ -256,7 +256,7 @@ export default function CreatedPage() {
                     onClick={() => copyToClipboard(organizerKey, 'key')}
                     className="shrink-0"
                   >
-                    {copiedKey ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
+                    {copiedKey ? <Check className="h-4 w-4 text-[hsl(var(--chart-3))]" strokeWidth={2.5} /> : <Copy className="h-4 w-4" />}
                   </Button>
                 </div>
               </div>

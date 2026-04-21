@@ -102,11 +102,11 @@ export default function EditEventPage() {
 
   if (!organizerKey) {
     return (
-      <main className="min-h-screen bg-gray-50 py-8 px-4">
+      <main className="min-h-screen bg-background py-8 px-4">
         <div className="container mx-auto max-w-2xl text-center">
-          <div className="bg-white rounded-xl shadow-sm border p-8">
-            <h1 className="text-xl font-bold text-gray-900 mb-2">ไม่มีสิทธิ์เข้าถึง</h1>
-            <p className="text-gray-600 mb-4">กรุณาใช้ลิงก์แอดมินที่ถูกต้อง</p>
+          <div className="bg-card rounded-xl shadow-sm border p-8">
+            <h1 className="font-display text-2xl text-foreground mb-2 tracking-tight">ไม่มีสิทธิ์เข้าถึง</h1>
+            <p className="text-muted-foreground mb-4">กรุณาใช้ลิงก์แอดมินที่ถูกต้อง</p>
             <Link href="/">
               <Button>กลับหน้าหลัก</Button>
             </Link>
@@ -117,20 +117,20 @@ export default function EditEventPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 py-8 px-4">
+    <main className="min-h-screen bg-background py-8 px-4">
       <div className="container mx-auto max-w-2xl">
         <div className="mb-8">
           <Link
             href={`/a/${eventId}?k=${organizerKey}`}
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
+            className="inline-flex items-center text-muted-foreground hover:text-foreground mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             กลับไปหน้าแอดมิน
           </Link>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+          <h1 className="font-display text-3xl md:text-4xl text-foreground tracking-tight">
             แก้ไขกิจกรรม
           </h1>
-          <p className="text-gray-600 mt-2">
+          <p className="text-muted-foreground mt-2">
             แก้ไขรายละเอียดกิจกรรม
           </p>
         </div>
@@ -150,11 +150,11 @@ export default function EditEventPage() {
               />
 
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                <label className="mb-1.5 block text-sm font-medium text-foreground/80">
                   รายละเอียด (ไม่บังคับ)
                 </label>
                 <textarea
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 transition-all duration-200 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none placeholder:text-gray-400 min-h-[100px]"
+                  className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-foreground transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none placeholder:text-muted-foreground min-h-[100px]"
                   placeholder="เพิ่มรายละเอียดเกี่ยวกับกิจกรรม..."
                   {...register('description')}
                 />

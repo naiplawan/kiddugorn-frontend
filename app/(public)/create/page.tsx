@@ -20,7 +20,6 @@ import {
   ChevronRight,
   ChevronLeft,
   Check,
-  Sparkles,
   FileText,
   CheckCircle2,
   AlertCircle,
@@ -36,12 +35,8 @@ const STEPS = [
   { id: 3, title: 'สรุป', icon: CheckCircle2, description: 'ตรวจสอบข้อมูล' },
 ] as const
 
-// Smooth easing constants for consistent animations
-const EASINGS = {
-  smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
-  bounce: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-  outBack: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-} as const
+// Single easing constant — ease-out-expo, exponential deceleration.
+const EASING = 'cubic-bezier(0.16, 1, 0.3, 1)'
 
 // Helper to get local date string in YYYY-MM-DD format (avoids timezone issues)
 function getLocalDateString(date: Date): string {
@@ -228,7 +223,6 @@ export default function CreateEventPage() {
             {/* Event Title */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-foreground">
-                <Sparkles className="h-4 w-4 text-primary" />
                 ชื่อกิจกรรม <span className="text-destructive">*</span>
               </label>
               <Input
@@ -247,7 +241,7 @@ export default function CreateEventPage() {
                 <Badge variant="secondary" className="text-xs">ไม่บังคับ</Badge>
               </label>
               <textarea
-                className="w-full rounded-xl border border-input bg-background px-4 py-3 text-base shadow-sm transition-all duration-200 ease-out focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 focus:outline-none focus:scale-[1.005] placeholder:text-muted-foreground min-h-[120px] resize-none"
+                className="w-full rounded-xl border border-input bg-background px-4 py-3 text-base shadow-sm transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 focus:outline-none placeholder:text-muted-foreground min-h-[120px] resize-none"
                 placeholder="อธิบายรายละเอียดเกี่ยวกับกิจกรรม เช่น วัตถุประสงค์ กำหนดการ หรือสิ่งที่ต้องเตรียม..."
                 {...register('description')}
               />
@@ -372,8 +366,8 @@ export default function CreateEventPage() {
 
                   {/* Selected Date Preview */}
                   {watchedDates[index]?.date && (
-                    <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-lg animate-scale-in">
-                      <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 animate-bounce-subtle" />
+                    <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-xl animate-scale-in">
+                      <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
                       <div className="text-sm">
                         <span className="font-medium text-primary">
                           {formatThaiDate(watchedDates[index].date)}
@@ -435,7 +429,7 @@ export default function CreateEventPage() {
               <CardContent className="p-0">
                 <div className="bg-primary/5 px-4 py-3 border-b">
                   <h4 className="font-semibold text-primary flex items-center gap-2">
-                    <Sparkles className="h-4 w-4" />
+                    <FileText className="h-4 w-4" />
                     รายละเอียดกิจกรรม
                   </h4>
                 </div>
@@ -555,15 +549,15 @@ export default function CreateEventPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-primary/5 via-background to-background pb-28 md:pb-8">
-      <div className="container mx-auto max-w-2xl px-4 py-6 md:py-8">
+    <main className="min-h-screen bg-background pb-28 md:pb-8">
+      <div className="container mx-auto max-w-2xl px-4 py-8 md:py-12">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+        <div className="mb-8 md:mb-10">
+          <h1 className="font-display text-3xl md:text-4xl text-foreground tracking-tight mb-2">
             สร้างกิจกรรมใหม่
           </h1>
-          <p className="text-muted-foreground">
-            สร้างกิจกรรมและเชิญเพื่อนมาโหวตเลือกเวลาที่สะดวก
+          <p className="text-muted-foreground text-base">
+            เชิญเพื่อนมาโหวตเลือกเวลาที่สะดวก
           </p>
         </div>
 
@@ -576,7 +570,7 @@ export default function CreateEventPage() {
                 className="h-full bg-primary transition-all duration-500 ease-out"
                 style={{
                   width: `${((currentStep - 1) / (STEPS.length - 1)) * 100}%`,
-                  transitionTimingFunction: EASINGS.smooth,
+                  transitionTimingFunction: EASING,
                 }}
               />
             </div>
@@ -591,26 +585,22 @@ export default function CreateEventPage() {
                   <div
                     className={`
                       w-10 h-10 rounded-full flex items-center justify-center
-                      transition-all duration-500 ease-out
-                      ${isCompleted
-                        ? 'bg-primary text-primary-foreground scale-105'
-                        : isActive
-                          ? 'bg-primary text-primary-foreground ring-4 ring-primary/20 scale-110 shadow-lg shadow-primary/30'
-                          : 'bg-muted text-muted-foreground'
+                      transition-colors duration-300
+                      ${isCompleted || isActive
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground'
                       }
                     `}
-                    style={{
-                      transitionTimingFunction: isCompleted ? EASINGS.bounce : EASINGS.smooth,
-                    }}
+                    style={{ transitionTimingFunction: EASING }}
                   >
                     {isCompleted ? (
-                      <Check className="h-5 w-5 animate-scale-in" />
+                      <Check className="h-5 w-5" strokeWidth={2.5} />
                     ) : (
-                      <Icon className={`h-5 w-5 ${isActive ? 'animate-pulse-subtle' : ''}`} />
+                      <Icon className="h-5 w-5" strokeWidth={2} />
                     )}
                   </div>
-                  <div className="mt-2 text-center hidden sm:block transition-all duration-300">
-                    <p className={`text-sm font-medium transition-colors duration-300 ${isActive || isCompleted ? 'text-primary' : 'text-muted-foreground'}`}>
+                  <div className="mt-2 text-center hidden sm:block">
+                    <p className={`text-sm font-medium transition-colors ${isActive || isCompleted ? 'text-foreground' : 'text-muted-foreground'}`}>
                       {step.title}
                     </p>
                     <p className="text-xs text-muted-foreground">{step.description}</p>
@@ -667,9 +657,8 @@ export default function CreateEventPage() {
               <Button
                 type="submit"
                 isLoading={isSubmitting}
-                className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-md hover:shadow-lg hover:shadow-primary/25"
+                className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90 shadow-md"
               >
-                <Sparkles className="h-4 w-4 mr-2" />
                 สร้างกิจกรรม
               </Button>
             )}

@@ -65,28 +65,28 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       }
 
       return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-background flex items-center justify-center p-4">
           <Card className="w-full max-w-md">
             <CardContent className="pt-6 text-center">
-              <div className="w-16 h-16 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-4">
-                <AlertTriangle className="h-8 w-8 text-red-600" />
+              <div className="w-16 h-16 mx-auto bg-destructive/10 rounded-full flex items-center justify-center mb-4">
+                <AlertTriangle className="h-8 w-8 text-destructive" />
               </div>
 
-              <h1 className="text-xl font-bold text-gray-900 mb-2">
+              <h1 className="font-display text-2xl text-foreground mb-2 tracking-tight">
                 เกิดข้อผิดพลาด
               </h1>
 
-              <p className="text-gray-600 mb-6">
+              <p className="text-muted-foreground mb-6">
                 ขออภัย เกิดข้อผิดพลาดที่ไม่คาดคิด กรุณาลองใหม่อีกครั้ง
               </p>
 
               {process.env.NODE_ENV === 'development' && this.state.error && (
-                <div className="mb-6 p-4 bg-gray-100 rounded-lg text-left">
-                  <div className="flex items-center gap-2 mb-2 text-red-600">
+                <div className="mb-6 p-4 bg-muted rounded-xl text-left">
+                  <div className="flex items-center gap-2 mb-2 text-destructive">
                     <Bug className="h-4 w-4" />
                     <span className="font-medium text-sm">Debug Info</span>
                   </div>
-                  <pre className="text-xs text-gray-600 overflow-auto max-h-32">
+                  <pre className="text-xs text-muted-foreground overflow-auto max-h-32 font-mono">
                     {this.state.error.message}
                   </pre>
                 </div>
@@ -132,7 +132,7 @@ export function SimpleErrorFallback({
   return (
     <div className="flex flex-col items-center justify-center p-8 text-center">
       <AlertTriangle className="h-8 w-8 text-amber-500 mb-2" />
-      <p className="text-gray-600 mb-4">{message}</p>
+      <p className="text-muted-foreground mb-4">{message}</p>
       {onRetry && (
         <Button variant="outline" size="sm" onClick={onRetry}>
           <RefreshCw className="h-4 w-4 mr-2" />

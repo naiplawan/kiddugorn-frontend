@@ -4,14 +4,14 @@ import Link from 'next/link'
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-primary/5 via-background to-background py-12 px-4">
+    <main className="min-h-screen bg-background py-12 md:py-20 px-4">
       <div className="container mx-auto max-w-3xl">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-            <Shield className="h-8 w-8 text-primary" />
+        <div className="mb-12">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 mb-5">
+            <Shield className="h-7 w-7 text-primary" strokeWidth={1.75} />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <h1 className="font-display text-3xl md:text-4xl text-foreground mb-3 tracking-tight">
             นโยบายความเป็นส่วนตัว
           </h1>
           <p className="text-muted-foreground">

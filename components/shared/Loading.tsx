@@ -42,10 +42,10 @@ interface LoadingPageProps {
 
 export function LoadingPage({ message = 'กำลังโหลด...' }: LoadingPageProps) {
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <main className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center">
         <LoadingSpinner size="lg" className="mx-auto mb-4" />
-        <p className="text-gray-600">{message}</p>
+        <p className="text-muted-foreground">{message}</p>
       </div>
     </main>
   )

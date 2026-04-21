@@ -11,48 +11,42 @@ interface VisualSummaryProps {
 }
 
 /**
- * VisualSummary Component
- *
- * A progress bar showing yes/maybe/no vote counts for a date column.
- * Uses stacked bar design with colors matching the vote states.
+ * Stacked progress bar showing yes/maybe/no distribution for a date column.
+ * Uses emerald/amber/rose as domain convention (green=yes, yellow=maybe, red=no)
+ * to match user expectations in voting UIs.
  */
 function VisualSummaryComponent({
   summary,
-  totalParticipants,
   className,
 }: VisualSummaryProps) {
   const { yes, maybe, no } = summary
 
-  // Calculate percentages, avoid division by zero
   const total = yes + maybe + no
   const yesPercent = total > 0 ? (yes / total) * 100 : 0
   const maybePercent = total > 0 ? (maybe / total) * 100 : 0
   const noPercent = total > 0 ? (no / total) * 100 : 0
 
-  // If no votes, show placeholder
   if (total === 0) {
     return (
       <div
         className={cn(
-          'w-full h-2 rounded-full bg-gray-100 overflow-hidden',
+          'w-full h-2 rounded-full bg-muted overflow-hidden',
           className
         )}
         aria-label="No votes yet"
       >
-        <div className="w-full h-full bg-gray-200/50" />
+        <div className="w-full h-full bg-muted-foreground/10" />
       </div>
     )
   }
 
   return (
     <div className={cn('w-full', className)}>
-      {/* Stacked progress bar */}
       <div
-        className="w-full h-2 rounded-full bg-gray-100 overflow-hidden flex"
+        className="w-full h-2 rounded-full bg-muted overflow-hidden flex"
         role="progressbar"
-        aria-label={`${yes} yes, ${maybe} maybe, ${no} no votes`}
+        aria-label={`${yes} ว่าง, ${maybe} อาจจะ, ${no} ไม่ว่าง`}
       >
-        {/* Yes section - emerald */}
         {yesPercent > 0 && (
           <div
             className="h-full bg-emerald-500 transition-all duration-300"
@@ -60,8 +54,6 @@ function VisualSummaryComponent({
             title={`ว่าง: ${yes}`}
           />
         )}
-
-        {/* Maybe section - amber */}
         {maybePercent > 0 && (
           <div
             className="h-full bg-amber-400 transition-all duration-300"
@@ -69,8 +61,6 @@ function VisualSummaryComponent({
             title={`อาจจะ: ${maybe}`}
           />
         )}
-
-        {/* No section - rose */}
         {noPercent > 0 && (
           <div
             className="h-full bg-rose-400 transition-all duration-300"
@@ -80,11 +70,10 @@ function VisualSummaryComponent({
         )}
       </div>
 
-      {/* Vote count labels (optional, show on hover or when space permits) */}
-      <div className="flex justify-between mt-1 text-xs text-gray-500">
-        <span className="text-emerald-600">{yes > 0 && yes}</span>
-        <span className="text-amber-600">{maybe > 0 && maybe}</span>
-        <span className="text-rose-600">{no > 0 && no}</span>
+      <div className="flex justify-between mt-1 text-xs text-muted-foreground tabular-nums">
+        <span className="text-emerald-700">{yes > 0 && yes}</span>
+        <span className="text-amber-700">{maybe > 0 && maybe}</span>
+        <span className="text-rose-700">{no > 0 && no}</span>
       </div>
     </div>
   )

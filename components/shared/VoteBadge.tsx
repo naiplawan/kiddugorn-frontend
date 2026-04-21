@@ -18,7 +18,7 @@ const config = {
   },
   maybe: {
     label: 'อาจจะ',
-    bgClass: 'bg-gray-100 text-gray-600 hover:bg-gray-200',
+    bgClass: 'bg-muted text-muted-foreground hover:bg-muted/70',
   },
 }
 

@@ -69,7 +69,7 @@ function CheckoutContent() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-primary/5 via-background to-background py-8 px-4">
+    <main className="min-h-screen bg-background py-8 md:py-12 px-4">
       <div className="container mx-auto max-w-2xl">
         {/* Header */}
         <Link
@@ -184,8 +184,8 @@ function CheckoutContent() {
 
                 {paymentMethod === 'promptpay' && (
                   <div className="text-center py-8">
-                    <div className="w-48 h-48 mx-auto bg-gray-100 rounded-lg flex items-center justify-center mb-4">
-                      <QrCode className="h-24 w-24 text-gray-400" />
+                    <div className="w-48 h-48 mx-auto bg-muted rounded-xl flex items-center justify-center mb-4">
+                      <QrCode className="h-24 w-24 text-muted-foreground" />
                     </div>
                     <p className="text-sm text-muted-foreground">
                       สแกน QR Code เพื่อชำระเงินผ่านแอปธนาคาร

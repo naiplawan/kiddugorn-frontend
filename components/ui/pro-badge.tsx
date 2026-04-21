@@ -10,15 +10,15 @@ interface ProBadgeProps {
 
 const tierConfig: Record<Tier, { color: string; label: string }> = {
   PERSONAL: {
-    color: 'bg-indigo-500',
+    color: 'bg-primary text-primary-foreground',
     label: 'Pro',
   },
   TEAM: {
-    color: 'bg-violet-500',
+    color: 'bg-secondary text-secondary-foreground',
     label: 'Team',
   },
   BUSINESS: {
-    color: 'bg-amber-500',
+    color: 'bg-accent text-accent-foreground',
     label: 'Business',
   },
 }
@@ -35,7 +35,7 @@ export function ProBadge({ tier = 'PERSONAL', size = 'md', className }: ProBadge
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 rounded-full font-medium text-white',
+        'inline-flex items-center gap-1 rounded-full font-medium',
         config.color,
         sizeConfig[size],
         className

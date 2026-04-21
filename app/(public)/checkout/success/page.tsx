@@ -24,7 +24,7 @@ export default function CheckoutSuccessPage() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-success/5 via-background to-background py-12 px-4">
+    <main className="min-h-screen bg-background py-12 md:py-16 px-4">
       <div className="container mx-auto max-w-lg">
         <div
           className={`text-center transition-all duration-500 ${
