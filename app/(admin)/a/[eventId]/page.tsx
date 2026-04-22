@@ -1,97 +1,25 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button, Card, CardHeader, CardTitle, CardContent, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui'
+import { AccessDenied, PageLoader, NotFound } from '@/components/shared'
+import { useAdminEvent } from '@/hooks/use-admin-event'
 import { useToast } from '@/hooks/use-toast'
 import { eventApi, getThaiErrorMessage } from '@/lib/api/client'
-import Link from 'next/link'
 import { getRelativeTimeThai } from '@/lib/utils/dates'
+import Link from 'next/link'
 import { AlertTriangle, Loader2, ExternalLink, Edit, Lock, Unlock, Trash2, Copy, Check } from 'lucide-react'
 
-interface DateOption {
-  id: string
-  label: string
-  order: number
-  voteSummary?: {
-    yes: number
-    maybe: number
-    no: number
-  }
-}
-
-interface EventData {
-  id: string
-  title: string
-  description?: string | null
-  location?: string | null
-  status: string
-  fixedDateIds: string[]
-  dateOptions: DateOption[]
-  createdAt: string
-  expiresAt?: string
-  _count?: {
-    votes: number
-  }
-}
-
 export default function AdminDashboardPage() {
-  const params = useParams()
   const router = useRouter()
-  const searchParams = useSearchParams()
   const { toast } = useToast()
+  const { event, isLoading, hasAccess, eventId, organizerKey } = useAdminEvent()
 
-  const eventId = params.eventId as string
-  const organizerKey = searchParams.get('k')
-
-  const [event, setEvent] = useState<EventData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [isLocking, setIsLocking] = useState(false)
   const [copied, setCopied] = useState(false)
-
-  // Fetch event data
-  useEffect(() => {
-    async function fetchEvent() {
-      if (!organizerKey) {
-        toast({
-          title: 'ไม่มีสิทธิ์เข้าถึง',
-          description: 'กรุณาใช้ลิงก์แอดมินที่ถูกต้อง',
-          variant: 'destructive',
-        })
-        setIsLoading(false)
-        return
-      }
-
-      try {
-        const data = await eventApi.getById(eventId, organizerKey)
-        setEvent({
-          id: data.id,
-          title: data.title || '',
-          description: data.description,
-          location: data.location,
-          status: data.status || 'OPEN',
-          fixedDateIds: data.fixedDateIds || [],
-          dateOptions: data.dateOptions || [],
-          createdAt: data.createdAt,
-          expiresAt: data.expiresAt,
-          // _count is optional in the Event type, so the cast is needed
-          _count: (data as any)._count,
-        })
-      } catch (error) {
-        toast({
-          title: 'โหลดข้อมูลไม่สำเร็จ',
-          description: getThaiErrorMessage(error),
-          variant: 'destructive',
-        })
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchEvent()
-  }, [eventId, organizerKey, toast])
 
   const handleDelete = async () => {
     if (!organizerKey) return
@@ -123,7 +51,6 @@ export default function AdminDashboardPage() {
     try {
       const newLocked = event.status !== 'LOCKED'
       await eventApi.lock(eventId, newLocked, organizerKey)
-      setEvent(prev => prev ? { ...prev, status: newLocked ? 'LOCKED' : 'OPEN' } : null)
       toast({
         title: newLocked ? 'ล็อกกิจกรรมแล้ว' : 'ปลดล็อกกิจกรรมแล้ว',
         description: newLocked
@@ -149,47 +76,9 @@ export default function AdminDashboardPage() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  if (!organizerKey) {
-    return (
-      <main className="min-h-screen bg-background py-8 px-4">
-        <div className="container mx-auto max-w-4xl text-center">
-          <div className="bg-card rounded-xl shadow-sm border p-8">
-            <h1 className="font-display text-2xl text-foreground mb-2 tracking-tight">ไม่มีสิทธิ์เข้าถึง</h1>
-            <p className="text-muted-foreground mb-4">กรุณาใช้ลิงก์แอดมินที่ถูกต้อง</p>
-            <Link href="/">
-              <Button>กลับหน้าหลัก</Button>
-            </Link>
-          </div>
-        </div>
-      </main>
-    )
-  }
-
-  if (isLoading) {
-    return (
-      <main className="min-h-screen bg-background py-8 px-4">
-        <div className="container mx-auto max-w-4xl flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-      </main>
-    )
-  }
-
-  if (!event) {
-    return (
-      <main className="min-h-screen bg-background py-8 px-4">
-        <div className="container mx-auto max-w-4xl text-center">
-          <div className="bg-card rounded-xl shadow-sm border p-8">
-            <h1 className="font-display text-2xl text-foreground mb-2 tracking-tight">ไม่พบกิจกรรม</h1>
-            <p className="text-muted-foreground mb-4">กิจกรรมนี้อาจถูกลบหรือหมดอายุแล้ว</p>
-            <Link href="/">
-              <Button>กลับหน้าหลัก</Button>
-            </Link>
-          </div>
-        </div>
-      </main>
-    )
-  }
+  if (!hasAccess) return <AccessDenied />
+  if (isLoading) return <PageLoader />
+  if (!event) return <NotFound />
 
   const isLocked = event.status === 'LOCKED'
   const voteCount = event._count?.votes || 0
@@ -242,7 +131,7 @@ export default function AdminDashboardPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <StatCard label="จำนวนวันที่" value={event.dateOptions.length.toString()} />
+          <StatCard label="จำนวนวันที่" value={(event.dateOptions?.length ?? 0).toString()} />
           <StatCard label="ผู้โหวต" value={voteCount.toString()} />
           <StatCard label="สร้างเมื่อ" value={getRelativeTimeThai(event.createdAt)} />
           <StatCard label="สถานะ" value={isLocked ? 'ล็อกแล้ว' : 'กำลังโหวต'} />
@@ -283,11 +172,11 @@ export default function AdminDashboardPage() {
             <CardTitle>ผลโหวตแต่ละวัน</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {event.dateOptions.length === 0 ? (
+            {(!event.dateOptions || event.dateOptions.length === 0) ? (
               <p className="text-muted-foreground text-center py-4">ไม่มีตัวเลือกวันที่</p>
             ) : (
               event.dateOptions.map((dateOption) => {
-                const isFixed = event.fixedDateIds.includes(dateOption.id)
+                const isFixed = (event.fixedDateIds || []).includes(dateOption.id)
                 return (
                   <div
                     key={dateOption.id}

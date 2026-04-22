@@ -6,40 +6,11 @@ import { useParams } from 'next/navigation'
 import { useEvent, useVotes } from '@/lib/swr/hooks'
 import { apiClient, getThaiErrorMessage, ApiError } from '@/lib/api/client'
 import { formatThaiDateFull, formatThaiTime } from '@/lib/utils/dates'
+import { getStoredVoteToken, storeVoteToken } from '@/lib/utils/vote-tokens'
 import { VotingGrid } from '@/components/voting'
 import { MapPin } from 'lucide-react'
 import { toast } from 'sonner'
 import type { AnswerValue, ParticipantRow, DateOption, Vote } from '@/types'
-
-// Local storage key for vote tokens
-const VOTE_TOKENS_KEY = 'kiddugorn_vote_tokens'
-
-interface StoredVoteToken {
-  eventId: string
-  voteId: string
-  token: string
-  name: string
-}
-
-function getStoredVoteTokens(): StoredVoteToken[] {
-  if (typeof window === 'undefined') return []
-  try {
-    const stored = localStorage.getItem(VOTE_TOKENS_KEY)
-    return stored ? JSON.parse(stored) : []
-  } catch {
-    return []
-  }
-}
-
-function storeVoteToken(token: StoredVoteToken) {
-  const tokens = getStoredVoteTokens().filter(t => t.eventId !== token.eventId)
-  tokens.push(token)
-  localStorage.setItem(VOTE_TOKENS_KEY, JSON.stringify(tokens))
-}
-
-function getStoredVoteToken(eventId: string): StoredVoteToken | undefined {
-  return getStoredVoteTokens().find(t => t.eventId === eventId)
-}
 
 export default function VotingPage() {
   const params = useParams()

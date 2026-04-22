@@ -20,8 +20,9 @@ export const createEventSchema = z.object({
   location: z.string().max(200, 'สถานที่ต้องไม่เกิน 200 ตัวอักษร').optional(),
   creatorName: z
     .string()
-    .min(1, 'กรุณากรอกชื่อของคุณ')
-    .max(50, 'ชื่อต้องไม่เกิน 50 ตัวอักษร'),
+    .max(50, 'ชื่อต้องไม่เกิน 50 ตัวอักษร')
+    .optional()
+    .or(z.literal('')),
   creatorEmail: z
     .string()
     .email('รูปแบบอีเมลไม่ถูกต้อง')

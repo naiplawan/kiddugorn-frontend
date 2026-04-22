@@ -2,6 +2,8 @@
  * API Client for Kiddugorn backend
  */
 
+import { formatDateOptionLabel } from '@/lib/utils/dates'
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
 
 /**
@@ -181,34 +183,6 @@ export const apiClient = {
 }
 
 /**
- * Format date and time to a human-readable label
- */
-function formatDateOptionLabel(date: string, time?: string): string {
-  const thaiDays = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์']
-  const thaiMonths = [
-    'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
-    'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
-  ]
-
-  const dateObj = new Date(date)
-  const dayName = thaiDays[dateObj.getDay()]
-  const day = dateObj.getDate()
-  const month = thaiMonths[dateObj.getMonth()]
-  const year = dateObj.getFullYear() + 543 // Buddhist Era
-
-  let label = `${dayName} ${day} ${month} ${year}`
-
-  if (time) {
-    const [hours, minutes] = time.split(':').map(Number)
-    const period = hours >= 12 ? 'น.' : 'น.'
-    const displayHours = hours % 12 || 12
-    label += ` ${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`
-  }
-
-  return label
-}
-
-/**
  * API response type for event creation
  */
 export interface CreateEventApiResponse {
@@ -249,11 +223,20 @@ export interface CreateEventResponse {
 /**
  * Frontend input for event creation (from form)
  */
+interface BackendCreateEventPayload {
+  title: string
+  dateOptions: Array<{ label: string }>
+  description?: string
+  location?: string
+  creatorName?: string
+  creatorEmail?: string
+}
+
 export interface FrontendCreateEventInput {
   title: string
   description?: string
   location?: string
-  creatorName: string
+  creatorName?: string
   creatorEmail?: string
   dates: Array<{
     date: string
@@ -271,16 +254,17 @@ export const eventApi = {
    */
   create: async (data: FrontendCreateEventInput): Promise<CreateEventResponse> => {
     // Transform frontend data to backend format
-    const backendData = {
+    const backendData: BackendCreateEventPayload = {
       title: data.title,
-      description: data.description || null,
-      creatorName: data.creatorName || null,
-      creatorEmail: data.creatorEmail || null,
-      location: data.location || null,
       dateOptions: data.dates.map((d: { date: string; time?: string }) => ({
         label: formatDateOptionLabel(d.date, d.time),
       })),
     }
+
+    if (data.description) backendData.description = data.description
+    if (data.location) backendData.location = data.location
+    if (data.creatorName) backendData.creatorName = data.creatorName
+    if (data.creatorEmail) backendData.creatorEmail = data.creatorEmail
 
     const response = await apiClient.post<CreateEventApiResponse>('/events', backendData)
 

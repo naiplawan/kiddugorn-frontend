@@ -72,6 +72,28 @@ export function formatThaiTime(timeString: string): string {
 }
 
 /**
+ * Format time string to 12-hour Thai display (e.g., "14:30" -> "2:30 น.")
+ */
+export function formatThaiTime12h(timeString: string): string {
+  if (!timeString) return ''
+  const [hours, minutes] = timeString.split(':').map(Number)
+  const displayHours = hours % 12 || 12
+  return `${displayHours}:${minutes.toString().padStart(2, '0')} น.`
+}
+
+/**
+ * Format a date with optional time as a human-readable label
+ * (e.g., "จันทร์ 15 มกราคม 2568 2:30 น.")
+ */
+export function formatDateOptionLabel(dateString: string, timeString?: string): string {
+  let label = formatThaiDateWithDay(dateString)
+  if (timeString) {
+    label += ` ${formatThaiTime12h(timeString)}`
+  }
+  return label
+}
+
+/**
  * Format date and time together (e.g., "15 ม.ค. 2568 เวลา 09:00 น.")
  */
 export function formatThaiDateTime(dateString: string, timeString?: string): string {

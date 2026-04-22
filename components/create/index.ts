@@ -1,3 +1,3 @@
-// Create event page components
-// Add components here as they are created
-export {}
+export { StepDetails } from './step-details'
+export { StepDates } from './step-dates'
+export { StepReview } from './step-review'

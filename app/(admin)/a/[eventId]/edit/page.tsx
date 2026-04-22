@@ -1,13 +1,14 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import { AccessDenied, PageLoader } from '@/components/shared'
+import { useAdminEvent } from '@/hooks/use-admin-event'
 import { useToast } from '@/hooks/use-toast'
+import { useForm } from 'react-hook-form'
 import { Button, Input, Card, CardHeader, CardTitle, CardContent } from '@/components/ui'
 import { eventApi, getThaiErrorMessage } from '@/lib/api/client'
-import { ArrowLeft, Loader2 } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
 interface EditEventForm {
@@ -17,13 +18,9 @@ interface EditEventForm {
 }
 
 export default function EditEventPage() {
-  const params = useParams()
   const router = useRouter()
-  const searchParams = useSearchParams()
   const { toast } = useToast()
-
-  const eventId = params.eventId as string
-  const organizerKey = searchParams.get('k')
+  const { event, isLoading, hasAccess, eventId, organizerKey } = useAdminEvent()
 
   const {
     register,
@@ -38,46 +35,18 @@ export default function EditEventPage() {
     },
   })
 
-  // Fetch event data on mount
   useEffect(() => {
-    async function fetchEvent() {
-      if (!organizerKey) {
-        toast({
-          title: 'ไม่มีสิทธิ์เข้าถึง',
-          description: 'กรุณาใช้ลิงก์แอดมินที่ถูกต้อง',
-          variant: 'destructive',
-        })
-        return
-      }
-
-      try {
-        const event = await eventApi.getById(eventId, organizerKey)
-        reset({
-          title: event.title || '',
-          description: event.description || '',
-          location: event.location || '',
-        })
-      } catch (error) {
-        toast({
-          title: 'โหลดข้อมูลไม่สำเร็จ',
-          description: getThaiErrorMessage(error),
-          variant: 'destructive',
-        })
-      }
+    if (event) {
+      reset({
+        title: event.title || '',
+        description: event.description || '',
+        location: event.location || '',
+      })
     }
-
-    fetchEvent()
-  }, [eventId, organizerKey, reset, toast])
+  }, [event, reset])
 
   const onSubmit = async (data: EditEventForm) => {
-    if (!organizerKey) {
-      toast({
-        title: 'ไม่มีสิทธิ์แก้ไข',
-        description: 'กรุณาใช้ลิงก์แอดมินที่ถูกต้อง',
-        variant: 'destructive',
-      })
-      return
-    }
+    if (!organizerKey) return
 
     try {
       await eventApi.update(eventId, {
@@ -100,21 +69,8 @@ export default function EditEventPage() {
     }
   }
 
-  if (!organizerKey) {
-    return (
-      <main className="min-h-screen bg-background py-8 px-4">
-        <div className="container mx-auto max-w-2xl text-center">
-          <div className="bg-card rounded-xl shadow-sm border p-8">
-            <h1 className="font-display text-2xl text-foreground mb-2 tracking-tight">ไม่มีสิทธิ์เข้าถึง</h1>
-            <p className="text-muted-foreground mb-4">กรุณาใช้ลิงก์แอดมินที่ถูกต้อง</p>
-            <Link href="/">
-              <Button>กลับหน้าหลัก</Button>
-            </Link>
-          </div>
-        </div>
-      </main>
-    )
-  }
+  if (!hasAccess) return <AccessDenied />
+  if (isLoading) return <PageLoader />
 
   return (
     <main className="min-h-screen bg-background py-8 px-4">
@@ -136,7 +92,6 @@ export default function EditEventPage() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Event Details Card */}
           <Card>
             <CardHeader>
               <CardTitle>รายละเอียดกิจกรรม</CardTitle>
@@ -169,7 +124,6 @@ export default function EditEventPage() {
             </CardContent>
           </Card>
 
-          {/* Submit Buttons */}
           <div className="flex gap-4">
             <Link href={`/a/${eventId}?k=${organizerKey}`} className="flex-1">
               <Button type="button" variant="outline" size="lg" className="w-full">
